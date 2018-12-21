@@ -1,4 +1,6 @@
-## Welcome to GitHub Pages
+## Welcome to EPSY 8266, Statistical Analysis Using Structural Equation Methods
+
+The course syllabus is located [here](syllabus.md)
 
 You can use the [editor on GitHub](https://github.com/cddesja/epsy8266/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
