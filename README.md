@@ -1,5 +1,4 @@
 ## Welcome to EPSY 8266, Statistical Analysis Using Structural Equation Methods
-Contact me: cddesja AT umn DOT edu
 
 ### Syllabus
 The most current course syllabus can be downloaded [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/epsy8266_syllabus_s2019.pdf)
