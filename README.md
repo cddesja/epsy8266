@@ -12,6 +12,13 @@ The most current course syllabus can be downloaded [here](https://github.com/cdd
 install.packages(c("lavaan", "boot", "devtools"))
 ```
 
+### Course Notes
+
+### In-Class Activities
+
+### Computer Lab
+
+### Final Assignment
 
 
 <!-- %You can use the [editor on GitHub](https://github.com/cddesja/epsy8266/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
