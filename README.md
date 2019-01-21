@@ -1,5 +1,5 @@
 ## Welcome to EPSY 8266, Statistical Analysis Using Structural Equation Methods
-
+Contact me: cddesja AT umn DOT edu
 
 ### Syllabus
 The most current course syllabus can be downloaded [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/epsy8266_syllabus_s2019.pdf)
@@ -13,14 +13,17 @@ install.packages(c("lavaan", "boot", "devtools"))
 ```
 
 ### Course Notes
+To view and download the course notes, [click here](notes.md)
 
-### [Course Resources](resources.md)
+### Course Resources
+To view the course resources, [click here](resources.md)
 
 ### In-Class Activities
+To view and download the in-class activities, [click here](activities.md)
 
 ### Computer Lab
+To view and download the computer labs, [click here](labs.md)
 
-Contact me cddesja AT umn DOT edu
 
 
 <!-- %You can use the [editor on GitHub](https://github.com/cddesja/epsy8266/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
