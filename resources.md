@@ -12,5 +12,5 @@
 - [Kline's Guilford website](https://www.guilford.com/companion-site/Principles-and-Practice-of-Structural-Equation-Modeling-Fourth-Edition/9781462523344)
 
 <p align="center">
-<a href="https://cddesja.github.io/epsy8266">Main Site</a>
+<a href="https://cddesja.github.io/epsy8266">Go Back</a>
 </p>
