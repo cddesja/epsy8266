@@ -7,18 +7,20 @@ The most current course syllabus can be downloaded [here](https://github.com/cdd
 ### Technology Requirements
 * [R](https://www.r-project.org/)
 * [RStudio](https://www.rstudio.com/)
-* `lavaan`, `boot`, and `devtools` packages
+* lavaan, boot, and devtools packages. Within R, type
 ```r
 install.packages(c("lavaan", "boot", "devtools"))
 ```
 
 ### Course Notes
 
+### [Course Resources](resources.md)
+
 ### In-Class Activities
 
 ### Computer Lab
 
-### Final Assignment
+Contact me cddesja AT umn DOT edu
 
 
 <!-- %You can use the [editor on GitHub](https://github.com/cddesja/epsy8266/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
