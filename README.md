@@ -4,6 +4,14 @@
 ### Syllabus
 The most current course syllabus can be downloaded [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/epsy8266_syllabus_s2019.pdf)
 
+### Technology Requirements
+* [R](https://www.r-project.org/)
+* [RStudio](https://www.rstudio.com/)
+* `lavaan`, `boot`, and `devtools` packages
+```r
+install.packages(c("lavaan", "boot", "devtools"))
+```
+
 
 
 <!-- %You can use the [editor on GitHub](https://github.com/cddesja/epsy8266/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
