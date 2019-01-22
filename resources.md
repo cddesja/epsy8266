@@ -23,8 +23,8 @@
 - [Hadley Wickham's coding style](http://adv-r.had.co.nz/Style.html)
 
 ### Simulations
-[Stanford simulation computer lab](https://web.stanford.edu/class/bios221/labs/simulation/Lab_3_simulation.html)
-[Hadley Wickham simulation presentation](http://had.co.nz/stat480/lectures/15-simulation.pdf)
+- [Stanford simulation computer lab](https://web.stanford.edu/class/bios221/labs/simulation/Lab_3_simulation.html)
+- [Hadley Wickham simulation presentation](http://had.co.nz/stat480/lectures/15-simulation.pdf)
 
 ## SEM
 - [SEM notes from lavaan's author](https://personality-project.org/r/tutorials/summerschool.14/rosseel_sem_intro.pdf)
