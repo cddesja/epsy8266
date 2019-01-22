@@ -9,9 +9,9 @@
 - [RMarkdown](https://rmarkdown.rstudio.com/articles_intro.html)
 
 ### lavaan
-- [official lavaan tutorial](http://lavaan.ugent.be/tutorial/index.html)
+- [Official lavaan tutorial](http://lavaan.ugent.be/tutorial/index.html)
 - [William Revelle's notes](https://static1.squarespace.com/static/4f5694c424aca8d4f8e69194/t/52b1eccae4b0eaf35a12f8bf/1387392202693/lavaan-package-in-R-for-sem.pdf)
-- [Measurement Invariance notes](http://users.ugent.be/~yrosseel/lavaan/multiplegroup6Dec2012.pdf)
+- [Measurement invariance notes](http://users.ugent.be/~yrosseel/lavaan/multiplegroup6Dec2012.pdf)
 
 ### Other statistical methods
 - [Quick-R multiple regression](https://www.statmethods.net/stats/regression.html)
