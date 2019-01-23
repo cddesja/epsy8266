@@ -1,6 +1,6 @@
 # In-Class Activities
-- [Simple Linear Regression](https://github.com/cddesja/epsy8266/raw/master/course_materials/activities/regression_review.Rmd)
-  - The compiled activity can also be viewed [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/activities/regression_review.html)
+- [Simple Linear Regression](https://github.com/cddesja/epsy8266/raw/master/course_materials/activities/regression_review.Rmd). You should save this page as `regression_review.Rmd`
+  - The compiled activity can also be viewed [here](https://cddesja.github.io/epsy8266/course_materials/activities/regression_review.html)
 
 
 # Data
