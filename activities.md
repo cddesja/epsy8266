@@ -1,4 +1,7 @@
-# In-Class Activites
+# In-Class Activities
+- [Simple Linear Regression](https://github.com/cddesja/epsy8266/raw/master/course_materials/activites/regression_review.Rmd)
+  - The compiled activity can also be viewed [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/activites/regression_review.html)
+
 
 # Data
 [Holzinger & Swineford (1939)](https://github.com/cddesja/epsy8266/raw/master/course_materials/data/HolzingerSwineford1939.csv)
