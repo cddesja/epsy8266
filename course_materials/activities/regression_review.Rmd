@@ -1,0 +1,338 @@
+---
+title: "Simple Linear Regression in R"
+author: "Christopher Desjardins"
+date: "January 23, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The purpose of this activity is to introduce/review regression in R.
+
+### About the data
+The data set, `HolzingerSwineford1939.csv` contains 26 tests measuring students' (n = 301) spatial, verbal, mental speed, memory, and mathematical abilities. The data come from two schools Paster School and Grant-White School. We will use this data set throughout the semester. Like the Political Democracy data set, this is a classic data set for factor analyses.
+
+The first thing we need to do is to read the data set into R. You can download and read in the data at the same time. 
+
+```{r}
+hs.data <- read.csv("https://github.com/cddesja/epsy8266/raw/master/course_materials/data/HolzingerSwineford1939.csv")
+names(hs.data)
+```
+
+The following variables are in this data set:
+
+- `id`: student ID
+- `gender`: student's gender
+- `grade`: student's grade in school
+- `agey`: student's age (years)
+- `agem`: student's age (month)
+- `school`: student's school
+- `visual`: visual perception test
+- `cubes`: cubes test
+- `paper`: paper form board test
+- `flags`: lozenges test
+- `general`: general information test
+- `paragrap`: paragraph comprehension test
+- `sentence`: sentence completion test
+- `wordc`: word classification test
+- `wordm`:  word meaning test
+- `addition`: add test
+- `code`: code test
+- `counting`: counting groups of dots test
+- `straight`: straight and curve capitals test
+- `wordr`: word recognition test
+- `numberr`: number recognition test
+- `figurer`: figure recognition test
+- `object`: object-number test
+- `numberf`: number-figure test
+- `figurew`: figure-word test
+- `deduct`: deduction test
+- `numeric`: numerical puzzles test
+- `problemr`: problem reasoning test
+- `series`: series completion 
+- `arithmet`: Woody-McCall mixed fundamentals, form I test
+- `paperrev`: additional paper form board test
+- `flagssub`: flags test
+
+* The spatial tests consist of `visual`, `cubes`, `paper`, `flags`, `paperrev`, and `flagssub`. The additional paper form board test (`paperrev`), can be used as a substitute for the paper form board test (`paper`). The flags test (`flagssub`), is a possible substitute for lozenges test (`flags`).
+
+* The verbal tests consist of `general`, `paragrap`, `sentence`, `wordc`, and `wordm`.
+
+* The speed tests consist of `addition`, `code`, `counting`, and `straight`.
+
+* The memory tests consist of `wordr`, `numberr`, `figurer`, `object`, `numberf`, and `figurew`.
+
+* The mathematical-ability tests consist of `deduct`, `numeric`, `problemr`, `series`, and `arithmet`.
+
+### Statistical Model
+Suppose we're interested in predicting a student's score on the visual perception given the student's cubes test score. Specifically, this model can be written as:
+
+$$
+Y_i = \beta_0 + \beta_1X_i + e_i
+$$
+
+where $Y_i$ is student i's score on the visual perception test, $X_i$ is student i's score on the cubes test, and $e_i$ is the residual error. Across the students, we can rewrite our model as:
+
+$$
+E(Y | X) = \beta_0 + \beta_1 X
+$$
+
+$$
+Var(Y | X) = \sigma^2
+$$
+
+where the first equation we call the **mean function** and the second is the **variance function**. We are almost always interested in inference and because of this we make a normality assumption. Specifically,
+
+$$
+Y | X \sim N(\beta_0 + \beta_1 X, \sigma^2)
+$$
+
+This is why we care about our residuals. We assume they are normally distributed and have constant variance (note the lack of a subscript for $\sigma^2$). Residuals have this distribution:
+
+$$
+e_i \sim N(0, \sigma^2)
+$$ 
+
+### Initial Data Analysis
+
+Before we run the actual model, it's a good idea to look at our data. Numeric summaries can be obtained using the `summmary()` function.
+
+```{r}
+summary(hs.data$visual)
+summary(hs.data$cubes)
+sd(hs.data$visual)
+sd(hs.data$cubes)
+```
+
+The `$` enables us to access a variable from a data set. So, `hs.data$visual` enables us to access the visual perception test that is contained within the `hs.data` data set. 
+
+We can also plot our data. For plotting continuous variables, you could use a histogram, density curve or a stem-and-leaf plot. Be careful with histograms as they can be a little misleading depending on the size of your bins. It can also be helpful to plot the observations in descending  (or ascending) order, this lets see the distribution and look for outliers. It's pretty similar to what we can see in the stem-and-leaf plot. Below, we create these plots for the visual perception test.
+
+```{r}
+hist(hs.data$visual)
+plot(density(hs.data$visual))
+stem(hs.data$visual)
+plot(sort(hs.data$visual, decreasing = TRUE), pch = ".")
+```
+
+#### Q1. How would you describe the distribution of scores on the visual perception test? Would you describe it as skewed or symmetric? Kurtotic? Are there outliers? Normal?
+
+#### Q2. Adapt the code for the cubes test and describe this distribution. Below I have started the code.
+
+```{r, eval = FALSE}
+hist(  )
+plot(density(  ))
+stem(  )
+plot(sort(   ), pch = ".")
+```
+
+The next plot I would suggest making is a scatter plot.
+
+```{r}
+plot(visual ~ cubes, data = hs.data)
+```
+
+We can modify this plot by adding better labels, changing the color, and adding a LOWESS smoother. A LOWESS smoother is a locally weighted regression line. Conceptually it works by calculating the value at a given point ($x_i$) based on a weighted least squares regression that weighs observations that are closer to $x_i$ more heavily than those that are further away. It can be helpful for ascertaining linearity/non-linearity. 
+
+```{r}
+plot(visual ~ cubes, hs.data,
+     xlab = "Cubes Test", 
+     ylab = "Visual Perception Test",
+     col = "dodgerblue")
+lines(lowess(x = hs.data$cubes, y = hs.data$visual))
+```
+
+#### Q3. What does this scatter plot tell us? What are we looking for in this plot? (think assumptions for bivariate scatter plots)
+
+
+### Fitting our model 
+Assuming we're satisfied with the data, we can then fit a simple linear regression.
+
+```{r}
+mod <- lm(visual ~ cubes, data = hs.data)
+```
+
+I would encourage you to assess your model assumptions prior to looking at your actual output because we are nearly always interested in inference. We can get some good plots to help with this using the `plot()` function.
+
+```{r}
+# the plot function will spit out 4 plots by default
+# we can view all four plots at the same time using the par 
+# commmand
+par(mfrow = c(2, 2))
+plot(mod)
+```
+
+The plot in the upper-left is a residual plot, the upper-right is a Q-Q plot, the lower-left is the square root of the standardized residuals, this can be helpful for detecting non-constant variance, and the last plot is a plot of leverage. Plots of Cook's distance can be helpful for assessing influence (similar to leverage).
+
+```{r}
+par(mfrow = c(1, 1)) # return the plotting device how it was originally
+plot(mod, which = 4)
+```
+
+For Cook's distance, you want to look for observations that are far from the rest of the observations. Some people recommend a value of 1 or  4 / N as a cut off, I don't. I think seeing the points is more helpful. This would be 67, 71, and 268. These values correspond to their row number. As a sensitivity analysis, we can drop these observations and see if they affect the model findings. This is a **good idea**, but we shouldn't just remove them from the analysis. 
+
+#### Q4. What do you think about the model? Please comment on non-constant variance, normality, the presence of outliers or influential points. 
+
+Presuming we're okay with the model, we can look at the output.
+
+```{r}
+summary(mod)
+```
+
+
+This model can be written as:
+
+$$
+\hat{Y}_i = 18.845 + 0.442 X_i
+$$
+
+#### Q5. How do you interpret the intercept? Is it meaningful here (HINT: look at `summary(hs.data$visual)` if you don't remember)? 
+
+#### Q6. How do you interpret the slope? 
+
+Confidence intervals can be obtained by:
+
+```{r}
+confint(mod)
+```
+
+#### Q7. How do you interpret the p-value and confidence intervals for cubes?
+
+If we want to get standardized regression coefficients, we need to z-score both visual and cubes. This can be done either before hand or during modeling. 
+
+```{r, eval = FALSE}
+hs.data$visual.s <- scale(hs.data$visual)
+
+# finish the code for cubes
+hs.data$cubes.s <- scale(  )
+```
+
+Then we can refit the model. Because we've standardized these variables, we no longer need an intercept as it will be 0. This can be omitted by adding `-1` in the model syntax. 
+
+```{r, eval = FALSE}
+# two things are missing the dependent variable and the independent variable. Put in the correct values 
+# i.e., replace the <HERE>
+mod.std <- lm(<HERE> ~ -1 + <HERE>, data = <HERE>)
+summary(mod.std)
+```
+
+#### Q8. What is this slope estimate? How do you interpret it? If we square the slope, what does this tell us? What is 1 minus the square of the slope?
+
+#### Q9. Calculate the confidence intervals for `mod.std`. 
+
+We can overlay our statistical model onto raw data using the following code:
+
+```{r}
+plot(visual ~ cubes, hs.data,
+     xlab = "Cubes Test", 
+     ylab = "Visual Perception Test",
+     col = "dodgerblue")
+abline(coef(mod), col = "red")
+```
+
+Looks pretty good!
+
+### SLR as an SEM
+
+We can also do this model within an SEM framework using `lavaan`. First, let's write the syntax and then view the model quickly with the `semPlot` function in the `semPlot` package. 
+
+```{r}
+library(lavaan)
+sem.mod <- '
+visual ~ 1 + cubes
+'
+sem.fit <- sem(model = sem.mod, data = hs.data)
+```
+
+Notice the similarity to the `lm` function. We can create a path diagram of our model.
+
+```{r}
+library(semPlot)
+semPaths(object = mod, 
+         color = c(man = "orange", # sets the color for the manifest
+                   lat = "green", # sets the color for the latent variables
+                   int = "white"), # set the color for the intercept
+         edge.color = "black", # sets the color of the path
+         what = "est", # plots the unstandardized coefficients
+         fade = FALSE, # don't fade the paths based on the magnitude of the estimates
+         esize = 1, # force the line width to be equivalent
+         rotation = 2 # use a left-right orientation instead of top-down
+         )
+```
+
+The triangle represents the intercept. 
+
+We can view the output from `lavaan`, as we can with many `R` objects, using the `summary` method.
+
+```{r}
+summary(sem.fit, standardized = TRUE)
+```
+
+#### Q10. Are these results the same as that obtained from `lm`?
+
+We can also obtain the covariance and correlation between these variables:
+
+```{r}
+cov(hs.data$visual, hs.data$cubes)
+cor(hs.data$visual, hs.data$cubes)
+```
+
+#### Q11. What's interesting about the correlation? (Hint: How is this related to the `std.mod` model above)
+
+We can also hand calculate the intercept and slope using `R`. Recall, the formula for the slope is:
+
+$$
+\hat{\beta}_1 = r_{xy}\frac{SD_y}{SD_x}
+$$
+
+As you saw above the `sd` function will get us the standard deviation. Please complete the following code:
+
+```{r, eval = FALSE}
+sd.y <- sd(  )
+sd.x <- sd(  )
+r.xy <- cor(   )
+beta1 <- r.xy * (sd.y / sd.x)
+beta1
+```
+
+And the intercept can be calculated by:
+
+$$
+\hat{\beta}_0 = \bar{X_y} - \hat{\beta_1}\bar{X}_x
+$$
+
+As you likely guess, we can use the `mean` function
+
+```{r, eval = FALSE}
+y_bar <- mean(  )
+x_bar <- mean(  )
+beta0 <- y_bar - beta1*x_bar
+beta0
+```
+
+#### Q12. What happens to the intercept if we mean-centered cubes? HINT: Look at the formula for the intercept.
+
+Finally, we could use matrix algebra to get these parameters. If we let Y be a vector of length 301 containing the visual test scores and X be a matrix that has two columns and 301 rows where the first is a 1s column (for the intercept) and the second a column containing the cubes test scores. We might remember that the least squares estimator for b (the unstandardized regression coefficients) can be found as follows:
+
+$$
+\begin{align}
+Y &= Xb \\
+X^TY &= X^TXb \\
+(X^TX)^{-1}X^TY &= (X^TX)^{-1}X^TXb \\
+(X^TX)^{-1}X^TY &= b 
+\end{align}
+$$
+
+Note that $(X^TX)^{-1}X^T = I$, i.e., the identity matrix. In R,
+
+```{r}
+X <- cbind(1, hs.data$cubes)
+Y <- hs.data$visual
+head(X)
+head(Y)
+solve(t(X) %*% X) %*% t(X) %*% Y
+```
+
+The `solve()` function allows us to invert a matrix, the `t()` function is transpose a matrix, and `%*%` is for matrix multiplication.

@@ -1,5 +1,5 @@
 
-# Welcome to EPsy 8266, Statistical Analysis Using Structural Equation Methods
+# Welcome to EPsy 8266
 
 ### Syllabus
 The most current course syllabus can be downloaded [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/epsy8266_syllabus_s2019.pdf)
@@ -7,9 +7,9 @@ The most current course syllabus can be downloaded [here](https://github.com/cdd
 ### Technology Requirements
 * [R](https://www.r-project.org/)
 * [RStudio](https://www.rstudio.com/)
-* lavaan, boot, and devtools packages. Within R, type
+* lavaan, boot, semPlot, and devtools packages. Within R, type
 ```r
-install.packages(c("lavaan", "boot", "devtools"))
+install.packages(c("lavaan", "boot", "devtools", "semPlot"))
 ```
 
 ### Course Notes
