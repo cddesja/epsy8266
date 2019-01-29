@@ -496,7 +496,7 @@ plot(mod, which = 4)</code></pre>
 ## (Intercept) 18.84553    2.03671   9.253  &lt; 2e-16 ***
 ## cubes        0.44222    0.08212   5.385 1.47e-07 ***
 ## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Residual standard error: 6.699 on 299 degrees of freedom
 ## Multiple R-squared:  0.08841,    Adjusted R-squared:  0.08537 
@@ -551,9 +551,9 @@ abline(coef(mod), col = &quot;red&quot;)</code></pre>
 <pre class="r"><code>library(lavaan)</code></pre>
 <pre><code>## This is lavaan 0.6-3</code></pre>
 <pre><code>## lavaan is BETA software! Please report any bugs.</code></pre>
-<pre class="r"><code>sem.mod &lt;- '
+<pre class="r"><code>sem.mod &lt;- &#39;
 visual ~ 1 + cubes
-'
+&#39;
 sem.fit &lt;- sem(model = sem.mod, data = hs.data)</code></pre>
 <p>Notice the similarity to the <code>lm</code> function. We can create a path diagram of our model.</p>
 <pre class="r"><code>library(semPlot)
@@ -563,7 +563,7 @@ semPaths(object = mod,
                    int = &quot;white&quot;), # set the color for the intercept
          edge.color = &quot;black&quot;, # sets the color of the path
          what = &quot;est&quot;, # plots the unstandardized coefficients
-         fade = FALSE, # don't fade the paths based on the magnitude of the estimates
+         fade = FALSE, # don&#39;t fade the paths based on the magnitude of the estimates
          esize = 1, # force the line width to be equivalent
          rotation = 2 # use a left-right orientation instead of top-down
          )</code></pre>
@@ -641,7 +641,7 @@ X^TY &amp;= X^TXb \\
 (X^TX)^{-1}X^TY &amp;= b 
 \end{align}
 \]</span></p>
-<p>Note that <span class="math inline">\((X^TX)^{-1}X^T = I\)</span>, i.e., the identity matrix. In R,</p>
+<p>Note that <span class="math inline">\((X^TX)^{-1}X^TX = I\)</span>, i.e., the identity matrix. In R,</p>
 <pre class="r"><code>X &lt;- cbind(1, hs.data$cubes)
 Y &lt;- hs.data$visual
 head(X)</code></pre>

@@ -325,7 +325,7 @@ X^TY &= X^TXb \\
 \end{align}
 $$
 
-Note that $(X^TX)^{-1}X^T = I$, i.e., the identity matrix. In R,
+Note that $(X^TX)^{-1}X^TX = I$, i.e., the identity matrix. In R,
 
 ```{r}
 X <- cbind(1, hs.data$cubes)
