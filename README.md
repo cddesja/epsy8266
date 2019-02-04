@@ -4,7 +4,7 @@
 ### Announcements
 
 * Computer Lab 1 is now due **Feb 6 at 11:59 PM**. Please submit the assignment via email.
-* Computer Lab 2 is now posted.
+
 
 ### Syllabus
 The most current course syllabus can be downloaded [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/epsy8266_syllabus_s2019.pdf)
