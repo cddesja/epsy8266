@@ -11,7 +11,7 @@ Below is Lab 1. I have uploaded it in three different formats. One is Word, one 
 Below is Lab 2. You only need the PDF version to complete the lab assignment. However, I have stripped all the R code from the PDF to help you complete the assignment. I would encourage you to begin with the PDF and remember you should be able to copy/paste R code between the PDF to RStudio. Because of the was this was document was recreated, I could export it to Word or RMarkdown. 
 
 - [PDF version](https://github.com/cddesja/epsy8266/raw/master/course_materials/labs/lab2/lab2.pdf)
-- [R Code](https://github.com/cddesja/epsy8266/raw/master/course_materials/labs/llab2/lab2.R)
+- [R Code](https://github.com/cddesja/epsy8266/raw/master/course_materials/labs/lab2/lab2.R)
 
 
 <p align="center">
