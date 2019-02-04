@@ -3,7 +3,7 @@
 
 ### Announcements
 
-* Computer Lab 1 is now due **Feb 3 at 11:59 PM**. Please submit the assignment via email.
+* Computer Lab 1 is now due **Feb 6 at 11:59 PM**. Please submit the assignment via email.
 * Computer Lab 2 is now posted.
 
 ### Syllabus
