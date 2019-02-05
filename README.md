@@ -3,8 +3,7 @@
 
 ### Announcements
 
-* Computer Lab 1 is now due **Feb 6 at 11:59 PM**. Please submit the assignment via email **to me and Ethan Brown (the TA)**. Email address is in the updated syllabus.
-
+* Computer Lab 1 is now due **Feb 6 at 11:59 PM**. Please submit the assignment via email **to me and Ethan Brown (the TA)**. Our email addresses are in the updated syllabus.	
 * Computer Lab 2 is now posted.
 
 ### Syllabus
