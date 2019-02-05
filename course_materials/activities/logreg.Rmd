@@ -8,7 +8,7 @@ output: html_document
 Purpose: To motivate the use of logistic regression and/or probit regression.
 
 # About Data
-The data are from a Washington University twin data study look at the Minnesota Multiphasic Personality Inventory (MMPI) & schizophrenia. The data can be downloaded off the website.
+The data are from a Washington University twin data study of the Minnesota Multiphasic Personality Inventory (MMPI) & schizophrenia. The data can be downloaded off the website.
 
 ```{r include = TRUE}
 wuschiz <- foreign::read.spss("wuschiz.sav", to.data.frame = TRUE)
