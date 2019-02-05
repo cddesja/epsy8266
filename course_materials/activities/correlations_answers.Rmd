@@ -1,0 +1,93 @@
+---
+title: "Part and Partial Correlations in Regression"
+author: "Christopher David Desjardins"
+date: "2/5/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R package
+```{r}
+install.packages("ppcor")
+```
+
+## Data
+
+Holzinger-Swineford data set.
+
+```{r}
+hs.data <- read.csv("https://github.com/cddesja/epsy8266/raw/master/course_materials/data/HolzingerSwineford1939.csv")
+```
+
+## Activity
+
+First, fit a regression by regressing deduct onto numeric. Then find the r-square
+
+```{r}
+mod.num <- lm(deduct ~ numeric, data = hs.data)
+summary(mod.num)$r.square
+```
+
+Now, fit a regression by regressing deduct onto problemr and find the r squared. I have started the code
+
+```{r}
+mod.prob <- lm(deduct ~ problemr, data = hs.data)
+summary(mod.prob)$r.square
+```
+
+Then fit a multiple regression by regressing deduct onto numeric and problemr. Find the r squared.
+
+```{r}
+mod.mlr <- lm(deduct ~ numeric + problemr, data = hs.data)
+summary(mod.mlr)$r.square  
+```
+
+Question 1: What is the difference in r squared between `mod.num` and `mod.mlr` (Rsquared1) and between `mod.prob` and `mod.mlr` (Rsquared2)? 
+
+```{r}
+Rsquared1 <- summary(mod.mlr)$r.square - summary(mod.num)$r.square; Rsquared1
+Rsquared2 <- summary(mod.mlr)$r.square - summary(mod.prob)$r.square; Rsquared2
+```
+
+Question 2: What is the proportion of variability not explained by `mod.num` (NotExp1) and `mod.prob` (NotExp2)?
+
+```{r}
+NotExp1 <- 1 - summary(mod.num)$r.square; NotExp1
+NotExp2 <- 1 - summary(mod.prob)$r.square; NotExp2
+```
+
+Question 3: Calculate the ratio of the Rsquared1 to NotExp1 and the ratio of Rsquared2 to NotExp2.
+
+```{r}
+Rsquared1 / NotExp2
+Rsquared2 / NotExp1
+```
+
+Now, calculate the part and partial correlations between 
+1. deduct and numeric paritalling out problemr
+2. deduct and problemr paritalling out numeric
+3. deduct and numeric partialling out problemr from numeric only
+3. deduct and problemr partialling out numeric from problemr only
+
+```{r}
+# partial correlations
+pcor(hs.data[ ,c("deduct", "numeric", "problemr")])$estimate
+(pcor(hs.data[ ,c("deduct", "numeric", "problemr")])$estimate)^2
+
+
+# part correlations
+spcor(hs.data[ ,c("deduct", "numeric", "problemr")])$estimate
+(spcor(hs.data[ ,c("deduct", "numeric", "problemr")])$estimate)^2
+```
+
+Question 4: What is the relationship between your answer to 1 and 3 and these correlations?
+
+Q1 are the part correlations squared and Q3 are the partial correlations squared. 
+
+- The part correlation squared is the proportion of the variance in deduct that can be uniquely explained by numeric. 
+- The partial correlation squared is the proportion of the variance in deduct not explained by problemr that can be uniquely explained by numeric. 
+
+
