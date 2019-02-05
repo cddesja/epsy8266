@@ -5,6 +5,8 @@ date: "2/5/2019"
 output: html_document
 ---
 
+The purpose of this activity is to explore the relationship between part and partial correlations and regression.
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ```
