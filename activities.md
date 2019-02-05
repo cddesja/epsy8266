@@ -4,6 +4,8 @@
 
 - [Correlations](https://github.com/cddesja/epsy8266/raw/master/course_materials/activities/correlations.Rmd)
 
+- [Motivation for Logistic Regression](https://github.com/cddesja/epsy8266/raw/master/course_materials/activities/logreg.Rmd)
+
 # Data
 [Holzinger & Swineford (1939)](https://github.com/cddesja/epsy8266/raw/master/course_materials/data/HolzingerSwineford1939.csv)
 
