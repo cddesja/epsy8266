@@ -11,7 +11,7 @@ Purpose: To motivate the use of logistic regression and/or probit regression.
 The data are from a Washington University twin data study of the Minnesota Multiphasic Personality Inventory (MMPI) & schizophrenia. The data can be downloaded off the website.
 
 ```{r include = TRUE}
-wuschiz <- foreign::read.spss("wuschiz.sav", to.data.frame = TRUE)
+wuschiz <- read.csv("https://github.com/cddesja/epsy8266/raw/master/course_materials/data/wuschiz.csv")
 ```
 
 The variables contained in the data are:
@@ -30,23 +30,16 @@ The variables contained in the data are:
 * Sc  = 'Schizophrenia'
 * Ma  = 'Hypomania'
 * Si  = 'Introversion'
+* male = 1: male, 0: female
 
 Information about these scales can be found here: https://psychcentral.com/lib/minnesota-multiphasic-personality-inventory-mmpi/.
-
 
 The Schizo variable is coded as:
 
 - 0 consensus diagnosis of not schizophrenia spectrum
-- 1 consensus diagnosis of schizophrenia spectrum disorder
-- 2 consensus diagnosis of definite or probable schizophrenia  
+- 1 consensus diagnosis of definite or probable schizophrenia  
 
-We will try and predict definite or probably schizophrenia (2) vs. not schizophrenia spectrum (0) from the `Hs`  (Hypochondriasis) and `Ma` (Hypomania) scales and the `Si` (Social Introversion) dichotomized (just for illustration). First, we will remove the people that are on the spectrum, recode the `Schizo` variable, and do a median split for Si (`si.med`).
-
-```{r}
-wuschiz <- subset(wuschiz, Schizo != 1)
-wuschiz$Schizo <- ifelse(wuschiz$Schizo == 2, 1, 0)
-wuschiz$si.med <- ifelse(wuschiz$Si >= median(wuschiz$Si), 1, 0)
-```
+We will try and predict definite or probably schizophrenia vs. not schizophrenia spectrum  from the `Hs`  (Hypochondriasis) and `Ma` (Hypomania) scales and the a respondent's gender (`male`).
 
 1. Fit a multiple regression model predicting schizophrenia given the hypochondriasis, hypomania, and dichotomized social introversion scales.
 
