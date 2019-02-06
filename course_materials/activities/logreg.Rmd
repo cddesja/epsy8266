@@ -11,7 +11,7 @@ Purpose: To motivate the use of logistic regression and/or probit regression.
 The data are from a Washington University twin data study of the Minnesota Multiphasic Personality Inventory (MMPI) & schizophrenia. The data can be downloaded off the website.
 
 ```{r include = TRUE}
-wuschiz <- read.csv("https://github.com/cddesja/epsy8266/raw/master/course_materials/data/wuschiz.csv")
+wuschiz <- read.csv("https://raw.githubusercontent.com/cddesja/epsy8266/master/course_materials/data/wuschiz.csv")
 ```
 
 The variables contained in the data are:
