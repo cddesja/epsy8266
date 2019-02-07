@@ -8,7 +8,7 @@ output: html_document
 Purpose: To motivate the use of logistic regression and/or probit regression.
 
 # About Data
-The data are from a Washington University twin data study of the Minnesota Multiphasic Personality Inventory (MMPI) & schizophrenia. The data can be downloaded off the website.
+The data are from a Washington University twin data study of the Minnesota Multiphasic Personality Inventory (MMPI) & schizophrenia. The data can be downloaded off the class website.
 
 ```{r include = TRUE}
 wuschiz <- read.csv("https://raw.githubusercontent.com/cddesja/epsy8266/master/course_materials/data/wuschiz.csv")
@@ -41,7 +41,7 @@ The Schizo variable is coded as:
 
 We will try and predict definite or probably schizophrenia vs. not schizophrenia spectrum  from the `Hs`  (Hypochondriasis) and `Ma` (Hypomania) scales and the a respondent's gender (`male`).
 
-1. Fit a multiple regression model predicting schizophrenia given the hypochondriasis, hypomania, and dichotomized social introversion scales.
+1. Fit a multiple regression model predicting schizophrenia given the hypochondriasis, hypomania, and gender.
 
 2. Visually assess the appropriateness of your model using the `plot()` function and answer the following questions: a) Should you do hypothesis testing? b) Do you have homogeneity of variance? c) Do you have normality of your residuals?
 
