@@ -2,7 +2,8 @@
 # Welcome to EPsy 8266
 
 ### Announcements
-
+* I will be out of town from 2/8 - 2/17 and Geoffrey Maruyama will be teaching on 2/12 and 2/14. If you need in person help during that time, please reach out to Ethan.
+* Ethan Brown's office hours and location are now on the updated syllabus. 
 * Computer Lab 2 is now posted.
 
 ### Syllabus

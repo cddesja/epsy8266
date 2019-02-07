@@ -1,0 +1,92 @@
+---
+title: "Motivation for logistic/probit regression"
+author: "Christopher David Desjardins"
+date: "2/7/2019"
+output: html_document
+---
+
+Purpose: To motivate the use of logistic regression and/or probit regression.
+
+# About Data
+The data are from a Washington University twin data study look at the Minnesota Multiphasic Personality Inventory (MMPI) & schizophrenia. The data can be downloaded off the website.
+
+The variables contained in the data are:
+
+* Schizo = 'Consensus diagnosis'
+* L   = 'Lie Scale'
+* F   = 'F Scale'
+* K   = 'K Scale'
+* Hs  = 'Hypochondriasis'
+* D   = 'Depression'
+* Hy  = 'Hysteria'
+* Pd  = 'Psychopathy'
+* Mf  = 'Masc / Fem'
+* Pa  = 'Paranoia'
+* Pt  = 'Psychasthenia'
+* Sc  = 'Schizophrenia'
+* Ma  = 'Hypomania'
+* Si  = 'Introversion'
+* male = 1: male, 0: female
+
+Information about these scales can be found here: https://psychcentral.com/lib/minnesota-multiphasic-personality-inventory-mmpi/.
+
+
+The Schizo variable is coded as:
+
+- 0 consensus diagnosis of not schizophrenia spectrum
+- 1 consensus diagnosis of schizophrenia spectrum disorder
+- 2 consensus diagnosis of definite or probable schizophrenia  
+
+The Schizo variable is coded as:
+
+- 0 consensus diagnosis of not schizophrenia spectrum
+- 1 consensus diagnosis of definite or probable schizophrenia  
+
+We will try and predict definite or probably schizophrenia vs. not schizophrenia spectrum  from the `Hs`  (Hypochondriasis) and `Ma` (Hypomania) scales and the a respondent's gender (`male`).
+
+```{r}
+wuschiz <- read.csv("https://raw.githubusercontent.com/cddesja/epsy8266/master/course_materials/data/wuschiz.csv")
+```
+
+1. Fit a multiple regression model predicting schizophrenia given the hypochondriasis, hypomania, and gender.
+
+```{r}
+mod <- lm(Schizo ~ Hs + Ma + male, data = wuschiz)
+```
+
+2. Visually assess the appropriateness of your model using the `plot()` function and answer the following questions: a) Should you do hypothesis testing? b) Do you have homogeneity of variance? c) Do you have normality of your residuals?
+
+```{r}
+plot(mod)
+```
+
+3. Obtain predicted values for your model and use the `summary()` function to look at the distribution of the predicted values. Do you see a problem?
+
+```{r}
+summary(predict(mod))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Class questions
+
+```{r}
+mod.lr <- glm(Schizo ~ Hs + Ma + male, data = wuschiz, family = "binomial")
+mod.pro <- glm(Schizo ~ Hs + Ma + male, data = wuschiz, family = "binomial"(link = "probit"))
+summary(mod.lr)
+summary(mod.pro)
+summary(mod)
+```
