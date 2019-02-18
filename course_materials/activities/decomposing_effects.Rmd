@@ -68,6 +68,7 @@ summary(effects.x1.fit)
 We see that we are able to recover our bivariate correlation.  
 
 Now, see if you can recreate the correlation for
+
 - `x2` and `y1` (0.572)
 - `y1` and `y3` (0.847)
 
