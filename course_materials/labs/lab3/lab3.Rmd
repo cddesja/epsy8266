@@ -1,0 +1,50 @@
+---
+title: "Computer Lab 3"
+author: "Your Name"
+date: "2/17/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Purpose
+The purpose of this lab is to give you experience performing an observed variable path analysis with a model that is a bit more realistic (complex) than what we have covered in class.
+
+## Background/Problem/Data 
+A student comes to you needing help on an SEM. You've done SEM before so you ask them for their data and their conceptual model. The student tells you they are interested in understanding current math achievement (`Achieve`) and factors that are related to it. They have measured prior math ability (`Ability`), family background (`Family`) (i.e., SES), student motivation (`Motive`), and coursework grades (`Course`). Their research question is a little vague but they have a conceptual model (see conceptualModel.pdf) and it looks like an SEM would be appropriate. The student doesn't have raw data, believes there were 250 people in the study, and instead they provide you with a correlation matrix. After reminding them how important it is to have a covariance matrix or the raw data, you agree to help them. Their correlation matrix is below.
+
+|         | Family | Ability | Motive | Course | Achieve |
+|--------:|--------|---------|--------|--------|---------|
+| Family  | 1      |         |        |        |         |
+| Ability | .417   | 1       |        |        |         |
+| Motive  | .190   | .205    | 1      |        |         |
+| Course  | .372   | .498    | .375   | 1      |         |
+| Achieve | .417   | .737    | .255   | .615   | 1       |
+
+#### Question 1: Interpret their conceptual model. Keep in mind that SEM is a causal modeling framework. (5 pts)
+
+#### Question 2: Which variables are exogenous and which variables are endogenous in their conceptual model? (2 pt)
+
+#### Question 3: Is this model just identified, under identified, or over identified? Show how you know. Given this, can you comment on the global fit of their theoretical model? (2 pts)
+
+#### Question 4: How many indirect effects of family are there on achieve? Please write the names of the indirect effects as products of the path labels. (2 pts)
+
+#### Question 5: Using the `getCov()` function (or another method if you prefer), please read the correlation matrix into R and print it below. (1 pt)
+
+#### Question 6: Please fit this model using `lavaan`. Make sure to label the variables exactly the same way they are labeled in the diagram and please make sure to request all the indirect effects of family on achieve. You do not need to do this for the other variables. To use the sample correlation with the `sem` function you need to specify the `sample.cov` argument setting it equal to the name of your correlation matrix and to specify the number of observations, you need to use the `sample.obs` argument and set it equal to the number of observqtion. Write at all the code below and paste all of the output from the `summary()` with the argument that `ci = TRUE` below (this provides a 95% confidence interval). (2 pts)
+
+#### Question 7: Please provide an interpretation of the model results. Specifically, interpret all the direct paths to achieve and the indirect paths for family on achieve but do not comment on significance. Use strong causal language like the causal effect of X on Y is .XXX. (5 pts)
+
+#### Question 8: Are there non-causal effects (either spurious or correlational) of family on achieve in the model? If so, please report their values. (1 pt)
+
+#### Question 9: Calculate the bivariate correlation between family and achieve using your output for Question 6. (1 pt)
+
+#### Question 10: Bootstrap the indirect effects for family on achieve. Take a bootstrap of 2000 samples, set a seed (for reproducibility), and then report the 95% confidence intervals for them. See the course notes for code to do this. (2 pts)
+
+#### Question 11: What conclusions can you make about the nature of mediation for family on achieve? For example, is there evidence of mediation? Does the causal link between family and achieve go through other variables? Use your results from Question 10 to support your answer. (2 pts)
+
+#### Question 12: Do you think their causal model is ``reasonable"? Why? Note, there isn't necessarily a right answer here, but you need to support your answer. (3 pts)
+
+

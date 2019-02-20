@@ -2,9 +2,7 @@
 # Welcome to EPsy 8266
 
 ### Announcements
-* I will be out of town from 2/8 - 2/17 and Geoffrey Maruyama will be teaching on 2/12 and 2/14. If you need in person help during that time, please reach out to Ethan.
-* Ethan Brown's office hours and location are now on the updated syllabus. 
-* Computer Lab 2 is now posted.
+* Computer Lab 3 is now posted and is due on 2/28.
 
 ### Syllabus
 The most current course syllabus can be downloaded [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/epsy8266_syllabus_s2019.pdf)
