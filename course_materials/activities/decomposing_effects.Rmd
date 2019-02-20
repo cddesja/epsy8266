@@ -1,0 +1,78 @@
+---
+title: "Making lavaan estimate all the effects"
+author: "Christopher Desjardins"
+date: "Feburary 19, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In path analysis, we differentiate between several types of effects.
+
+- __Direct effect__ - The influence of one variable on another that is unmediated by any other variable, i.e. each single headed arrow represents a direct effect
+- __Indirect effects__ - Effect that is mediated by at least one intervening variable
+- __Total causal effects__ - Sum of the above two effects
+- __Spurious effects__ - Effects due to a common cause
+- __Correlated effects__  - Effects that aren't analyzed in our model
+
+If we add together the direct effect, indirect effects, spurious effects, and the correlated effects we are able to recover the bivariate correlation. We can make `lavaan` calculate them directly. By having `lavaan` do this as well, we could get (bootstrap) standard errors for these effects. 
+
+We will just look at the model on slide #13 in the lecture notes (hopefully I don't change that number between now and then). 
+
+First, we'll read in the data.
+
+```{r}
+slide13.dat <- read.table("https://raw.githubusercontent.com/cddesja/epsy8266/master/course_materials/data/decompose.dat", col.names = c(paste0("y", 1:3), paste0("x", 1:3)))
+head(slide13.dat)
+```
+
+The correlation table on that slide is:
+
+```{r}
+cor(slide13.dat)
+```
+
+Let's use `lavaan` to estimate all these effects. We'll fit a model to calculate the correlation between `x1` and `y3` (0.508).
+
+```{r}
+library("lavaan")
+
+effects.x1 <- '
+y1 ~ a*x1 + b*x2
+y3 ~ c*x1 + d*x2 + e*y1
+x1 ~~ f*x2
+
+# indirect effect of x1 through y1
+ae := a*e
+
+# spurious effects - none!
+
+# correlated effects
+df := d*f
+ebf := e*b*f
+
+# total causal effects
+tce := c + (a*e)
+
+# bivariate correlation
+biv.cor.x := c + (a*e) + (d*f) + (e*b*f)
+'
+
+# std.ov standardizes all observed variables
+effects.x1.fit <- sem(effects.x1, slide13.dat, std.ov = TRUE, se = "none")
+summary(effects.x1.fit)
+```
+
+We see that we are able to recover our bivariate correlation.  
+
+Now, see if you can recreate the correlation for
+
+- `x2` and `y1` (0.572)
+- `y1` and `y3` (0.847)
+
+
+
+
+
