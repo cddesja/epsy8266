@@ -5,6 +5,8 @@ Lab 3 is available as an Rmd file. Please note that if you prefer to use MS Word
 
 - [RMarkdown version](https://github.com/cddesja/epsy8266/raw/master/course_materials/labs/lab3/lab3.Rmd)
 
+The conceptual model is available [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/labs/lab3/conceptualModel.pdf)
+
 ## Lab 2
 Below is Lab 2. You only need the PDF version to complete the lab assignment. However, I have stripped all the R code from the PDF to help you complete the assignment. I would encourage you to begin with the PDF and remember you should be able to copy/paste R code between the PDF to RStudio. Because of the was this was document was recreated, I could export it to Word or RMarkdown. 
 
