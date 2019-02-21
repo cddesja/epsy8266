@@ -29,6 +29,9 @@
 - [David Kenny's notes](http://www.davidakenny.net/cm/causalm.htm)
 - [Kline's Guilford website](https://www.guilford.com/companion-site/Principles-and-Practice-of-Structural-Equation-Modeling-Fourth-Edition/9781462523344)
 
+# SEM papers
+- [Leslie Hayduk's call for a 5th Ed. for Kline](https://journals.library.ualberta.ca/csp/index.php/csp/article/viewFile/2016-K/21437)
+
 <p align="center">
 <a href="https://cddesja.github.io/epsy8266">Go Back</a>
 </p>
