@@ -2,10 +2,15 @@
 # Welcome to EPsy 8266
 
 ### Announcements
-* Computer Lab 3 is now posted and is due on 2/28.
+* Instructions for the final project are now posted.
+* Computer Lab 3 is now posted and is due on 2/28. Please remember to submit via Canvas.
+
 
 ### Syllabus
 The most current course syllabus can be downloaded [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/epsy8266_syllabus_s2019.pdf)
+
+### Final Project
+Instructions for the final project are [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/activities/final_assignent.pdf)
 
 ### Technology Requirements
 * [R](https://www.r-project.org/)
