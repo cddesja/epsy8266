@@ -3,6 +3,7 @@
 
 ### Announcements
 * Instructions for the final project are now posted.
+* Computer Lab 4 is now posted and is due on 3/14. Please remember to submit via Canvas.
 * Computer Lab 3 is now posted and is due on 2/28. Please remember to submit via Canvas.
 
 

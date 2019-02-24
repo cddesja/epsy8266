@@ -1,0 +1,153 @@
+---
+title: "Computer Lab 4 ANSWER KEY"
+author: "<YOUR NAME>"
+date: "2/24/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+hs.data <- read.csv("https://github.com/cddesja/epsy8266/raw/master/course_materials/data/HolzingerSwineford1939.csv")
+library(lavaan)
+```
+
+## Purpose/Data
+To perform a confirmatory factor analysis on the HolzingerSwineford1939 verbal and mathematical-ability tests. The data are on the course website and is labeled `HolzingerSwineford1939.csv`. 
+
+* The verbal tests consist of `general`, `paragrap`, `sentence`, `wordc`, and `wordm`.
+* The mathematical-ability tests consist of `deduct`, `numeric`, `problemr`, `series`, and `arithmet`.
+
+Please refer to the `regression_review.Rmd` assignment for more details about these tests. 
+
+Unlike the other labs, this lab will be more loosely structured and I would strongly encourage you to use the `cfa_activity.Rmd` as a basis.
+
+#### Question 1: Please describe the distributions for the verbal tests using the summary() and hist() functions. If you prefer you can use a different type of plot function than hist() and you can use ggplot2. 1) Do you see missing data and are the variables z-scored? 2) Comment on the shape of the distributions and 3) comment on the presence of outliers. (5 pts)
+
+__For Question 1 and Question 4, I just want them to spend time looking at the image and thinking about it.__
+
+1 pt for R code
+
+1 pt for the plots
+
+```{r}
+verb <- subset(hs.data, select = c(general, paragrap, sentence, wordc, wordm))
+summary(verb)
+par(mfrow = c(2,3))
+for(i in 1:5) hist(verb[,i], main = paste(names(verb[i])))
+```
+
+They are not z-scored and there is no missing data.
+
+Overall, the indicators are roughly symmetric and bell-shaped. However, they don't look normal. The wordm indicator is a bit right-skewed, however. There might be some leptokurtosis for some of the variables (e.g., paragrap). There might be a few potential outliers for general in the upper part of the distribution.
+
+#### Question 2: Please create a scatterplot matrix of the verbal tests. Do 1) all the variables look linearly related, 2) do the associations look strong/weak and 3) do you see any outlier or influential points? (3 pts)
+
+1 pt for R code
+
+```{r}
+pairs(verb)
+```
+
+In general, the indicators all look linearly related to one another. Maybe wordm and sentence have a slight non-linearity, but this isn't likely huge. All the relationships look reasonably strong. There are again a few observations that might be outliers, but at least nothing that suggest typos. 
+
+#### Question 3: Please plot Mahalonobis distance for just the verbal tests. Do you see any influential points? (2 pts)
+
+1 pt for R code/plot
+```{r}
+library(faoutlier)
+verb.mah <- robustMD(verb)
+plot(verb.mah)
+```
+
+There are a few observations that are high relative to the other observations. For example, values that have Mahalanobis distance greater than 20 could be examined to see if they influence the model findings and just to verify they are true values.
+
+#### Question 4: Please describe the distributions for the math-ability tests using the summary() and hist() functions. If you prefer you can use a different type of plot function than hist() and you can use ggplot2. 1) Do you see missing data and are the variables z-scored? 2) Comment on the shape of the distributions and 3) comment on the presence of outliers. (5 pts)
+
+1 pt for R code
+
+1 pt for the plots
+
+```{r}
+math <- subset(hs.data, select = c(deduct, numeric, problemr, series, arithmet))
+summary(math)
+par(mfrow = c(2,3))
+for(i in 1:5) hist(math[,i], main = paste(names(math[i])))
+```
+
+Again, the variables are not z-scored and their is no missing data.
+
+The deduct variable appears highly leptokurtic, numeric is slightly negatively skewed and so is arithmetic. The problemr and series tests look more symmetric, but nothing looks normal. There likely some outliers for arithmet.
+
+#### Question 5: Please create a scatterplot matrix of the math-ability tests. Do 1) all the variables look linearly related, 2) do the associations look strong/weak and 3) do you see any outlier or influential points?  (3 pts)
+
+1 pt for R code
+
+```{r}
+pairs(math)
+```
+
+In general, the indicators all look linearly related to one another. However, there associations look weaker than the verbal tests. There appear to be more outliers as well.
+
+#### Question 6: Please plot Mahalonobis distance for just the math-ability tests. Do you see any influential points? (2 pts)
+
+1 pt for R code/plot
+
+```{r}
+math.mah <- robustMD(math)
+plot(math.mah)
+```
+
+There are two points that are quite high relative to the other points. These two points are greater than 20. It would be advisable to understand what influence these points could have on the analysis.
+
+#### Question 7: Please fit and estimate the CFA using lavaan. In the CFA, all the verbal tests should load onto a single factor and all the math-ability tests should load onto another factor. Then provide the output of this model including standardized output and fit indices. (2 pts)
+
+All points for R code
+```{r}
+mod <- '
+verb =~ general + paragrap + sentence + wordc + wordm
+math =~ deduct + numeric + problemr + series + arithmet
+'
+fit <- lavaan::cfa(mod, data = hs.data)
+summary(fit, standardized = TRUE, fit.measures = TRUE)
+```
+
+#### Question 8: Please report the chi-square test statistic for your model and interpret it. (1 pt)
+
+The chi-square test statistic is 64.592 with 34 df and a p = .001. We reject the null hypothesis and conclude that the fully saturated model fits our observed covariance matrix better than our reduced model-implied covariance matrix.
+
+#### Question 9: Why do general and deduct have 1.000 for estimate? (1 pt)
+
+These are our reference variables.
+
+#### Question 10: Please interpret the wordc and deduct standardized estimates (Std.all). (2 pt)
+
+For a one standard deviation increase in the verbal factor, we expect to increase .741 standard deviations on the wordc test, similarly for a one standard deviation increase in the math factor, we expect to increase .586 standard deviations on the deduct test.
+
+#### Question 11: Provide a path diagram of your model with the estimated standardized parameters. (1 pt)
+
+```{r}
+library(semPlot)
+semPaths(fit, what = "stand")
+```
+
+#### Question 12: 1) Calculate Cook's distance for your model, 2) Plot Cook's distance and interpret it (i.e., do you see any influential points, 3) drop the observation with the largest influence, 3) refit your model, and 4) report if the results change qualitatively (i.e., do parameters change in significance, does fit increase or decrease dramatically). (4 pts)
+
+2 pts
+```{r, cache = TRUE}
+cooks.dist <- gCD(model = mod, data = hs.data)
+plot(cooks.dist)
+which.max(cooks.dist$gCD)
+cooks.dist$gCD[124]
+fit.no124 <- lavaan::cfa(mod, hs.data[-124,])
+summary(fit.no124, standardized = TRUE, fit.measures = TRUE)
+```
+
+There are at least two observations that are highly influential. The results do not change qualitatively. The parameters are pretty similar as is fit with and without this subject.
+
+#### Question 13: Look at your residuals using the `lavResiduals()` function. Pass this function your fitted model. Do you see any values in `$cov` that are larger than .10 (in absolute value). What do you think large values would indicate? (2 pts).
+
+```{r}
+lavResiduals(fit)
+```
+
+No, there are no values that are large. Large values would indicate correlations/covariances that aren't capture well by our model and indicate a model that doesn't fit well. 

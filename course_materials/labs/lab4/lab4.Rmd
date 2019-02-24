@@ -1,0 +1,47 @@
+---
+title: "Computer Lab 4"
+author: "<YOUR NAME>"
+date: "2/24/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Purpose/Data
+To perform a confirmatory factor analysis on the HolzingerSwineford1939 verbal and mathematical-ability tests. The data are on the course website and is labeled `HolzingerSwineford1939.csv`. 
+
+* The verbal tests consist of `general`, `paragrap`, `sentence`, `wordc`, and `wordm`.
+* The mathematical-ability tests consist of `deduct`, `numeric`, `problemr`, `series`, and `arithmet`.
+
+Please refer to the `regression_review.Rmd` assignment for more details about these tests. 
+
+Unlike the other labs, this lab will be more loosely structured and I would strongly encourage you to use the `cfa_activity.Rmd` as a basis.
+
+#### Question 1: Please describe the distributions for the verbal tests using the summary() and hist() functions. If you prefer you can use a different type of plot function than hist() and you can use ggplot2. 1) Do you see missing data and are the variables z-scored? 2) Comment on the shape of the distributions and 3) comment on the presence of outliers. (5 pts)
+
+
+#### Question 2: Please create a scatterplot matrix of the verbal tests. Do 1) all the variables look linearly related, 2) do the associations look strong/weak and 3) do you see any outlier or influential points? Please keep your answer succinct and just focus on overall patterns. (3 pts)
+
+#### Question 3: Please plot Mahalonobis distance for just the verbal tests. Do you see any influential points? (2 pts)
+
+#### Question 4: Please describe the distributions for the math-ability tests using the summary() and hist() functions. If you prefer you can use a different type of plot function than hist() and you can use ggplot2. 1) Do you see missing data and are the variables z-scored? 2) Comment on the shape of the distributions and 3) comment on the presence of outliers. (5 pts)
+
+#### Question 5: Please create a scatterplot matrix of the math-ability tests. Do 1) all the variables look linearly related, 2) do the associations look strong/weak and 3) do you see any outlier or influential points? Please keep your answer succinct and just focus on overall patterns. (3 pts)
+
+#### Question 6: Please plot Mahalonobis distance for just the math-ability tests. Do you see any influential points? (2 pts)
+
+#### Question 7: Please fit and estimate the CFA using lavaan. In the CFA, all the verbal tests should load onto a single factor and all the math-ability tests should load onto another factor. Then provide the output of this model including standardized output and fit indices. (2 pts)
+
+#### Question 8: Please report the chi-square test statistic for your model and interpret it. (1 pt)
+
+#### Question 9: Why do general and deduct have 1.000 for estimate? (1 pt)
+
+#### Question 10: Please interpret the wordc and deduct standardized estimates (Std.all). (2 pt)
+
+#### Question 11: Provide a path diagram of your model with the estimated standardized parameters. (1 pt)
+
+#### Question 12: 1) Calculate Cook's distance for your model, 2) Plot Cook's distance and interpret it (i.e., do you see any influential points, 3) drop the observation with the largest influence, 3) refit your model, and 4) report if the results change qualitatively (i.e., do parameters change in significance, does fit increase or decrease dramatically). (4 pts)
+
+#### Question 13: Look at your residuals using the `lavResiduals()` function. Pass this function your fitted model. Do you see any values in `$cov` that are larger than .10 (in absolute value). What do you think large values would indicate? (2 pts) 

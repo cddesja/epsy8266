@@ -1,5 +1,12 @@
 # Computer Labs
 
+## Lab 4
+Lab 4 is available as an Rmd file. Please note that if you prefer to use MS Word as an ouptut, you can change `html_document` to `word_document` at the top of the file where it says `output:`
+
+- [RMarkdown version](https://github.com/cddesja/epsy8266/raw/master/course_materials/labs/lab4/lab4.Rmd)
+
+You will need to use the HolzingerSwineford1939 data set.
+
 ## Lab 3
 Lab 3 is available as an Rmd file. Please note that if you prefer to use MS Word as an ouptut, you can change `html_document` to `word_document` at the top of the file where it says `output:`
 

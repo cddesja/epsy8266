@@ -1,0 +1,295 @@
+---
+title: "CFA of WISC-R"
+author: "Christopher Desjardins"
+date: "June 28, 2016"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Background on the data
+The WISC-R is a revised version of the WISC (a downward extension of the Weschler-Belleview test for children) published in 1975. Data are from an administration of the WISC-R to 175 children. Details about the data can be found in Tabacknick & Fidell, Using Multivariate Statistics, 3rd ed.
+Variables in the data include `client` (this is the id variable), `agemat` (an age categorical variable), and 10 core subtest and 1 optional subtest.
+
+### Reading in data and exploring the data
+
+The first thing that we need to do is to read the data into `R`. The `wiscr` data set is in SPSS format and is stored in the data file called `wiscsem.sav`. To read in this data set we load the `foreign` library, define the path to the data directory (optional), call the `read.spss` function, and then view the first few rows of data. 
+
+```{r}
+library("foreign")
+wiscr <- foreign::read.spss("wiscsem.sav", to.data.frame = T)
+head(wiscr)
+```
+
+It is always good idea to view a summary of our data to ensure that it has been read in correctly. 
+
+```{r}
+summary(wiscr)
+```
+
+There are no strange `Min.` or `Max.` values for any of the variables and it looks like there are no missing data (i.e, there is nothing that says `NA's`). 
+
+Since we want to do a confirmatory factor analysis with this data it's a good idea to look at histograms, box plots, stem and leaf plots (to look for outliers),  bivariate relationships between the manifest variables using a scatter plot, and to get a sense of potentially influential cases. To look at a scatter plot matrix we can use the `pairs()` function. Since we've got 11 variables, we would have 121 graphs. So, let's look at the scatter plot matrix by the latent construct they are theoretically suppose to be manifestations of. 
+
+We'll start by making box plots.
+```{r, fig.height=7}
+wiscr.sub <- wiscr[,-(1:2)]
+par(mfrow = c(3, 4),
+    mar = c(1, 2, 2, 1) + .1)
+for(i in 1:11){
+  boxplot(wiscr.sub[,i], main = paste(names(wiscr.sub))[i])
+}
+
+```
+For most variables, there are likely a few observations that are outliers. These outliers could be problematic moving forward and could influence our findings and therefore the stability of our estimated parameters. Some of these variables are also quite skewed as indicated by the asymmetry of the plots. However, what is a univariate outlier or influential point may not be a multivariate outlier or influential point. The multivariate influential plot, shown below, might be a bit more insightful for assessing outliers
+
+Next lets look at the bivariate scatter plots starting with the manifest variables for the verbal factor.
+
+```{r}
+dev.off() # this resets par()
+verb.scat <- subset(wiscr.sub, select = c("info", "comp", "arith", "simil", "digit", "vocab"))
+pairs(verb.scat)
+```
+
+In general, we see moderately strong, positive relationships between all the subtests with the possible exception of `vocab`, which appears to be less strongly correlated with the other subtests. 
+
+Next we examine the manifest variables for the performance factor.
+```{r}
+perf.scat <- subset(wiscr.sub, select = !(names(wiscr.sub) %in% names(verb.scat)))
+pairs(perf.scat)
+```
+
+Again, we see moderately strong positive relationships between all the subtests with the exception of `coding`. This shouldn't be too surprising given that `coding` did not load on the factor in an EFA.
+
+To investigate influence, we'll use a function to look for multivariate influential cases using the method described in Bollen (1989). This is very similar to Mahalanobis distance is a measure of how far an observation is from the centroid.
+
+```{r, results = "asis"}
+mean.matrix <- matrix(rep(apply(wiscr , 2, mean, na.rm = T), nrow(wiscr.sub)), byrow = T, 
+ncol = ncol(wiscr))
+Z <- wiscr - mean.matrix
+Z <- as.matrix(Z)
+A <- Z%*%solve(t(Z)%*%Z)%*%t(Z)
+A <- diag(A)
+dat <- data.frame(A, client = wiscr$client)
+plot(A ~ client, dat, type = "h", xlab = "Client ID")
+points(dat$A ~ dat$client, pch = 16)
+abline(h = dim(mean.matrix)[2]/dim(mean.matrix)[1], col = rgb(0,0,1, .5), lwd = 2)
+```
+
+There are a handful of observations that are further away from the rest. The blueish line corresponds to the average size, 0.062 (number of manifest variables / number of observations), so values large relative to this could be influential. What's large, is relative! A sensible thing to do here would be to investigate those points which are greater than 0.125. At least looking at those that are around 0.15 might be proper.  
+
+Finally, we can also look at Mahalanobis distance using the `faoutlier` package. Note, I have commented this out because it conflicts with the lavaan::cfa function.  
+
+```{r, message = FALSE}
+# Install devtools
+install.packages('devtools')
+library(devtools)
+
+# Install faoutlier from GitHub
+install_github('philchalmers/faoutlier')
+library(faoutlier)
+
+# Runs the Mahalanobis distance function
+wiscr.mah <- robustMD(wiscr)
+plot(wiscr.mah)
+```
+
+Don't be alarmed by the similar pattern. I didn't create the same plot twice but with slightly different colors. These algorithms are similar but not identical for detecting influential cases. Please note, the story is similar regardless of the plot you're looking at. There are a few observations near 40 that are the same as those that were at 0.15 in the earlier plot.
+
+#### What should you do?
+A sensible thing to do would be to consider the robustness of our CFA findings by omitting these observations (i.e., as a sensitivity analysis). I leave that as an exercise for you. If you had values that were very far from the pack and a small sample size, then it would be even more imperative to do this. 
+
+For now, let's move on to performing the actual CFA.
+
+### CFA using `lavaan`
+
+To perform the actual confirmatory factor analysis in R we'll use `lavaan` package and we'll use the `semPlot` package to create path diagrams feeding the function from our `lavaan` objects.
+
+```{r, message = FALSE}
+# Install the package, if you haven't yet.
+# install.packages("semPlot")
+
+# Load the lavaan and semPlot packages
+library("lavaan")
+library("semPlot")
+```
+
+As a refresher, in `lavaan`, the following syntax is used
+
+  + "=~" means is manifested by. This is how you define your latent variable.
+  + "~~" is how you define a covariance or variance.
+  + "~" is how you define a path for path analysis or SEM.
+  + "+" is how you string together variables (like with `lm()`)
+
+Since we know which subtests were suppose to measure which component of intelligence (i.e., Verbal or Performance), we will define our model to reflect this. Otherwise we should consider doing an EFA, right? 
+
+```{r}
+# Step 1: define the model using lavaan syntax
+# quick note: the =~ means is factor X is a manifestation of A + B + C
+iq.cfa <- '
+  verb =~ info + comp + arith + simil + digit + vocab
+  perf =~ pictcomp + parang + block + object + coding
+'
+```
+
+Now let's fit the model with the `cfa()` function. We could also use the `sem()` function, however the author of the package warns.
+
+\begin{quote}
+The function sem() is very similar to the function cfa(). In fact, the two functions are currently almost identical, but this may change in the future.
+\end{quote}
+
+Since we're doing a CFA, let's use the `cfa()` function to fit the model and save it to an object called `fit`. Also, note because we use the package `faoutlier`, it loaded the package called `sem`, which annoyingly has a function also called `cfa()`. So, you might need to unload the `sem` package or call `cfa()` via `lavaan::cfa()`.
+```{r}
+fit <- cfa(iq.cfa, data = wiscr)
+```
+
+Before we look at the output, let's see what the path diagram looks like.
+```{r}
+semPaths(fit)
+```
+
+Let's also inspect the model to verify that `lavaan` actually fit the model we wanted.
+```{r}
+inspect(fit)
+```
+
+In the `$lamba$` matrix, we see which factor loadings (patter coefficients) are being estimated. This is indicated by a non-zero value. So, you'll note that `info` and `pictcomp` are both zero. This is so that the model can be identified (i.e., we are using these to define a scale for our factor).
+
+Next, is `$theta`, the variance-covariance matrix of our manifest variables, this refers to the residual variances for our manifest variables, i.e., the unique or specific variance. This is variability that is unexplained by our factor models. You'll see that all the manifest variables have this estimated and we have no covariances estimated. This means that residuals are uncorrelated (i.e., locally-independent).
+
+Finally, you can `$psi` which is the variance-covariance matrix of our factors. You'll note that the elements of this matrix (the variances and covariance) are being estimated (i.e., we are assuming verbal and performance intelligence are correlated). 
+
+To obtain the default summary output, we'll call the summary function over our `fit` object.
+
+```{r}
+summary(fit)
+```
+
+The output is meant to be similar to `Mplus`. However, the default output is a bit more terse. The "Minimum Function Test Statistic", is the chi-square statistic for the current model and is essentially is a measure of deviance between your model-implied variance/covariance matrix, and your observed variance/covariance matrix (what would be a fully-saturated model). This means that our reduced model-implied covariance matrix doesn't fit as well as the fully-saturated model. The next is the number of degrees of freedom.
+
+Then the parameter estimates. The major thing to note here is that `coding` doesn't appear to be related to performance IQ. 
+
+Unlike `Mplus`, `lavaan` does not estimate intercepts by default. If you are interested in this, you need to specify `meanstructure = TRUE` during the fitting routine. This will not change the overall fit of the model as `lavaan` will plug in the mean of your observed variables as the estimates (i.e., it doesn't change the degrees of freedom). Let's look at the model.
+
+```{r}
+fit <- cfa(iq.cfa, data = wiscr, meanstructure = TRUE)
+inspect(fit)
+```
+
+The big difference is the presence of the `$nu`, which are the intercepts for the observed variables (i.e., their means) and `$alpha`, which are the means for verbal and performance. These are fixed to 0 by default. This can be confusing because while these parameters are being estimated, they are not really being estimated because we're just using the means for their estimates.  
+
+```{r}
+summary(fit)
+```
+
+
+To obtain the standardized solution and get more fit indices,
+
+```{r}
+fit <- cfa(iq.cfa, data = wiscr)
+summary(fit, standardized = TRUE, fit.measures = TRUE)
+```
+
+The output starts the same as previously but now we got an additional "Model test baseline model". What is this model? We talked about it earlier in the semester.
+
+Next are some absolute fit indices, CFI and TLI, we wants these to be large, preferably at least .9. Then are the log likelihood of our current model and the unrestricted model (a fully saturated model). Followed by the number of free parameters, we can get this from inspect too, the AIC and BIC, which are calculated based on the log likelihood. Finally, the RMSEA and SRMR, where we want these to be small. Preferably, smaller than .05 but less than .08 is at least okay. 
+
+Please note, that some SEM methodologists don't think we should look at these statistics at all and instead should only interpret the first chi-square test!
+
+If you want to request the standard SEM fit indices, you can obtain them either directly
+```{r}
+fitmeasures(fit, c("tli", "cfi", "rmsea.ci.lower", "rmsea", "rmsea.ci.upper", "srmr", "aic", "bic"))
+```
+
+Because all of our latent variables are continuous, we will use `Std.all` for all the variables (which does the standardization based on all the observed and latent variables). The interpretation is the same as for beta weights. For example, for info, 0.423 means for a 1 standard deviation in verbal, the expected increase in info is 0.423 standard deviations. If we square these, that is the proportion of the manifest variable explained by the factor (i.e r-squared). If we had dichotomous predictor variables, we would use `Std.lv`, which represents the expected change in standard deviations in the outcome variable as the dichotomous variable goes from 0 to 1. Recall, our predictor variable is actually the latent factors, which is continuous. 
+
+We can have lavaan give us the r-squared directly, which can also be calculated by just doing 1 - the standardized unique variance
+
+```{r}
+summary(fit, rsquare = T)
+```
+
+So what is the "Model test baseline model". 
+```{r}
+iq.baseline <- '
+  info ~~ info
+  comp ~~ comp
+  arith ~~ arith
+  simil ~~ simil
+  digit ~~ digit
+  vocab ~~ vocab
+  pictcomp ~~ pictcomp
+  parang ~~ parang
+  block ~~ block
+  object ~~ object
+  coding ~~ coding
+'
+fit.base <- cfa(model = iq.baseline, data = wiscr)
+summary(fit.base, fit.measures = T)
+```
+
+So, it's the model that estimates only variances and no other parameters. So the df of 55, is 66 (number of unique elements) - 11 (number of variances). Not exactly sure what use this model is or what's the point of this test. It's my understanding that this model is suppose to be the most parsimonious plausible model. 
+
+Returning to our model, Let's fit the parameter for coding to 0 in our the model and refit the model
+```{r}
+iq.cfa.nocode <- '
+  verb =~ info + comp + arith + simil + digit + vocab
+  perf =~ pictcomp + parang + block + object + 0*coding
+'
+fit.nocode <- cfa(iq.cfa.nocode, wiscr)
+summary(fit.nocode, fit.measures = TRUE, standardized = TRUE)
+```
+
+Let's compare the model with coding and without coding
+
+```{r}
+nocode.stats <- fitmeasures(fit.nocode, fit.measures = c("rmsea", "tli", "cfi"))
+code.stats <- fitmeasures(fit, fit.measures = c("rmsea", "tli", "cfi"))   
+rbind(nocode.stats, code.stats)
+anova(fit.nocode, fit) # chi-square test of difference. 
+```
+
+We could consider dropping coding but dropping coding. It is a more parsimonious model but if it's a theoretical important measure to our construct, it should probably remain.
+
+Next, let's examine the modification indices. Our present model is nested within this.
+```{r}
+modindices(fit.nocode, sort. = TRUE)
+```
+
+The first column is the name of the path to free, followed by the expected change in chi-square, the expected parameter change (i.e., the estimated parameter) and then standardized versions of this: standardizing just the latent variable, standardizing all variables, standardizing all but exogenous variables in the model.  
+
+The biggest change in model fit would be allowing comp to load onto perf. The change in chi-square should be 9.853.
+```{r}
+iq.cfa.emp <- '
+  verb =~ info + comp + arith + simil + digit + vocab
+  perf =~ pictcomp + parang + block + object + comp 
+'
+fit.emp <- cfa(iq.cfa.emp, wiscr)
+summary(fit.emp, fit.measures = TRUE, standardized = TRUE)
+```
+
+Now we see that are fit measures are very good and fail to reject the null hypothesis for the chi-square test. However, does it make sense to load comp on perf? That's a validity question and has ramifications for generalizability as well. 
+
+Now let's plot our best fitting model with standardized parameter
+```{r}
+semPaths(fit.emp, what = "stand", fade = F)
+```
+
+Finally, let's see if there are any influential points using Cook's distance.
+
+```{r}
+cfa.cooks <- gCD(data = wiscr, mod = iq.cfa.emp)
+plot(cfa.cooks)
+```
+
+There are definitely a few observations which are quite far from the rest. Let's see if the results change if we drop the value with the largest Cook's distance.
+
+```{r}
+which.max(cfa.cooks$gCD)
+cfa.cooks$gCD[76]
+fit.emp.no76 <- cfa(iq.cfa.emp, wiscr[-76,])
+summary(fit.emp.no76)
+```
