@@ -34,7 +34,7 @@ To view and download the in-class activities, [click here](activities.md)
 To view and download the computer labs, [click here](labs.md)
 
 ### R scripts
-R codes used in the lecture notes is [available here](scripts.md)
+R codes used in the lecture notes are [available here](scripts.md)
 
 
 
