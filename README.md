@@ -33,6 +33,9 @@ To view and download the in-class activities, [click here](activities.md)
 ### Computer Lab
 To view and download the computer labs, [click here](labs.md)
 
+### R scripts
+R codes used in the lecture notes is [available here](scripts.md)
+
 
 
 <!-- %You can use the [editor on GitHub](https://github.com/cddesja/epsy8266/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
