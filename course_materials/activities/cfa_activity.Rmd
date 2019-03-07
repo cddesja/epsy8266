@@ -102,10 +102,10 @@ To investigate influence, we can also look at Mahalanobis distance using the `fa
 
 ```{r, message = FALSE}
 # Install devtools
-install.packages('devtools')
+# install.packages('devtools')
 
 # Install faoutlier from GitHub
-devtools::install_github('philchalmers/faoutlier')
+# devtools::install_github('philchalmers/faoutlier')
 
 wiscr.mah <- faoutlier::robustMD(wiscr)
 plot(wiscr.mah)
@@ -134,8 +134,7 @@ To perform the actual confirmatory factor analysis in R we'll use `lavaan` packa
 # Install the package, if you haven't yet.
 # install.packages("semPlot")
 
-# Load the lavaan and semPlot packages
-library("semPlot")
+# Load the lavaan package
 library("lavaan")
 ```
 
@@ -177,7 +176,7 @@ From the output, we see that we reject the chi-square test of difference, which 
 Before we look at the output, let's see what a path diagram looks like for this model.
 
 ```{r}
-semPaths(two.fit)
+semPlot::semPaths(two.fit)
 ```
 
 This diagram shows all the paths being estimated. Why is the path to each indicator "dashed"?
@@ -185,7 +184,7 @@ This diagram shows all the paths being estimated. Why is the path to each indica
 Let's also inspect the model to verify that `lavaan` actually fit the model we anticipated.
 
 ```{r}
-inspect(fit)
+inspect(two.fit)
 ```
 
 In the `$lamba$` matrix, we see which factor loadings (pattern coefficients) are being estimated. This is indicated by non-zero values. So, you'll note that `info` and `pictcomp` are both zero. This is so that the model can be identified (i.e., we are using these to define a scale for our factor). What kind of identification is this called?
@@ -199,7 +198,7 @@ Can you write this model in LISREL notation?
 To obtain the default summary output, we'll call the summary function over our `fit` object.
 
 ```{r}
-summary(fit)
+summary(two.fit)
 ```
 
 The output is meant to be similar to `Mplus`. However, the default output is a bit more terse. The "Minimum Function Test Statistic", is the chi-square statistic I described above. Because we reject the null hypothesis this means that our restricted model doesn't fit as well as the fully-saturated model and suggests a poor fitting model. 
@@ -209,10 +208,12 @@ After this we see the parameter estimates. The major thing to note here is that 
 To obtain the standardized solution and get the fit indices in the output:
 
 ```{r}
-summary(fit, standardized = TRUE, fit.measures = TRUE)
+summary(two.fit, standardized = TRUE, fit.measures = TRUE)
 ```
 
-Because all of our latent variables are continuous, we can use `Std.all` for all the variables (which standardizes both the observed and latent variables). The interpretation is the same as beta weights. For example, for info, 0.423 means for a 1 standard deviation in verbal, the expected increase in info is 0.423 standard deviations. If we square these that is the proportion of the manifest variable explained by the factor (i.e r-squared) because we have a simple solution.  If we had dichotomous predictor variables, we would use `Std.lv`, which represents the expected difference/change in standard deviations in the outcome variable as the dichotomous variable goes from 0 to 1. Note the `Std.lv` only standardized the latent variable.  For comp, we can interpret the unstandardized pattern coefficient as "we would expect a .926 unit increase in comp for a 1 unit increase the verbal factor".
+Because all of our latent variables are continuous, we can use `Std.all` for all the variables (which standardizes both the observed and latent variables). The interpretation is the same as beta weights. For example, for info, 0.423 means for a 1 standard deviation in verbal, the expected increase in info is 0.423 standard deviations. If we square these that is the proportion of the manifest variable explained by the factor (i.e r-squared) because we have a simple solution.  If we had dichotomous predictor variables, we would use `Std.lv`, which represents the expected difference/change in standard deviations in the outcome variable as the dichotomous variable goes from 0 to 1. Note the `Std.lv` only standardized the latent variable.  For comp, we can interpret the unstandardized pattern coefficient as "we would expect a .926 unit increase in comp for a 1 unit increase the verbal factor". 
+
+Large standardized pattern coefficients also suggest convergent validity. Kline's criteria is that the overwhelming majority of these should be greater than .70 (i.e, share 50% or more of their variance is explained by the factor). This is a reasonable assertion. Based on this criteria, would you say we have convergent validity?
 
 The fit indices are printed at the top. We want CFI and TLI to be large preferably at least .95. This information is is followed by the log-likelihoods of our current model and the unrestricted model (a fully saturated model). Followed by the number of free parameters, we can get this from inspect too, and the AIC and BIC, which are calculated based on the log-likelihood and df. Finally, the RMSEA and SRMR are presented and we want these to be small. Preferably, smaller than .05 but less than .08 is at least okay. 
 
@@ -225,8 +226,8 @@ The output also shows a "Model test baseline model". What is this model? We talk
 Unlike `Mplus`, `lavaan` does not estimate intercepts by default. If you are interested in these, you need to specify `meanstructure = TRUE` during the fitting routine. This will not change the overall fit of the model as `lavaan` will plug in the mean of your observed variables as the estimates (i.e., it doesn't change the degrees of freedom). Let's look at the model.
 
 ```{r}
-fit <- cfa(iq.cfa, data = wiscr, meanstructure = TRUE)
-inspect(fit)
+fit.mean <- cfa(mod = two.mod, data = wiscr, meanstructure = TRUE)
+inspect(fit.mean)
 ```
 
 The big difference from inspect now is the presence of the `$nu`, which are the intercepts for the observed variables (i.e., their means) and `$alpha`, which are the means for verbal and performance. These are fixed to 0 by default. This can be confusing because while these parameters are being estimated, they are not really being estimated because we're just using the means for their estimates.  
@@ -236,8 +237,7 @@ The big difference from inspect now is the presence of the `$nu`, which are the 
 We can and should inspect the residual covariance matrix to assess the local fit of our model. This will tell us which covariances/variances aren't being explained by our model. We will do this by examining the residual correlation matrix ($cov) and the standardized residuals ($cov.z). We are looking for correlations that are larger than .1 (in absolute value) and for the standardized residuals if a value is greater than 1.96 (in absolute value) this indicates a statistically significant lack of fit and they can be interpreted as z-tests.
 
 ```{r}
-fit <- cfa(iq.cfa, data = wiscr) # rerun this to remove the intercepts
-lavResiduals(fit)
+lavResiduals(two.fit)
 ```
 
 Based on the residual correlation matrix, it looks like the covariance between pictcomp and comp is being overestimated by the model as are pictcomp and simil, parang and simil, and coding and vocab. The covariance between pictcomp and coding is being underestimated as is the covariance between object and arith. These values imply misfit for at least part of the covariance matrix.
@@ -251,8 +251,8 @@ This mismatch can explain the poor fit seen above. More on this later!
 We can have lavaan give us the r-squared directly, which can also be calculated by just doing 1 - the standardized unique variance.
 
 ```{r}
-summary(fit, rsquare = T)
-inspect(fit, "rsquare")
+summary(two.fit, rsquare = T)
+inspect(two.fit, "rsquare")
 ```
 
 The unstandardized error variance divided by the observed variance for the indicator is the proportion of variance not explained by the factor (or 1 - rsquared).
@@ -260,7 +260,7 @@ The unstandardized error variance divided by the observed variance for the indic
 ```{r}
 obs.var <- apply(wiscr, 2, var)[3:13]
 obs.var <- data.frame(obs.var = obs.var, lhs = names(obs.var))
-par.ests <- parameterEstimates(fit)
+par.ests <- parameterEstimates(two.fit)
 error.var <- par.ests[par.ests$op == "~~", c("lhs", "est")]
 
 # merge the data.frames
@@ -305,16 +305,16 @@ mod.fixcoded <- '
   perf =~ pictcomp + parang + block + object + 0*coding
 '
 fit.fixcoded <- cfa(mod.fixcoded, wiscr)
-summary(fit.nocode, fit.measures = TRUE, standardized = TRUE)
+summary(fit.fixcoded, fit.measures = TRUE, standardized = TRUE)
 ```
 
 Let's compare the model with coding and without coding
 
 ```{r}
 fixedcode.stats <- fitmeasures(fit.fixcoded, fit.measures = c("rmsea", "tli", "cfi"))
-org.stats <- fitmeasures(fit, fit.measures = c("rmsea", "tli", "cfi"))   
+org.stats <- fitmeasures(two.fit, fit.measures = c("rmsea", "tli", "cfi"))   
 rbind(fixedcode.stats, org.stats)
-anova(fit.nocode, fit) # chi-square test of difference. 
+anova(fit.fixcoded, two.fit) # chi-square test of difference. 
 ```
 
 We could consider dropping coding but dropping coding changes the intepretation of the construct. It is a more parsimonious model but if it's a theoretical important measure to our construct, it should probably remain. For now, let's drop coding, refit the model, and examine the modification indices.
@@ -349,7 +349,7 @@ Now we see that are fit measures are very good and that we fail to reject the nu
 Now let's plot our best fitting model with the standardized parameters.
 
 ```{r}
-semPaths(fit.emp, what = "stand", fade = F)
+semPlot::semPaths(fit.emp, what = "stand", fade = F)
 ```
 
 Finally, let's see if there are any influential points using Cook's distance.
