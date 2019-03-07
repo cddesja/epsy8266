@@ -211,7 +211,7 @@ To obtain the standardized solution and get the fit indices in the output:
 summary(two.fit, standardized = TRUE, fit.measures = TRUE)
 ```
 
-Because all of our latent variables are continuous, we can use `Std.all` for all the variables (which standardizes both the observed and latent variables). The interpretation is the same as beta weights. For example, for info, 0.423 means for a 1 standard deviation in verbal, the expected increase in info is 0.423 standard deviations. If we square these that is the proportion of the manifest variable explained by the factor (i.e r-squared) because we have a simple solution.  If we had dichotomous predictor variables, we would use `Std.lv`, which represents the expected difference/change in standard deviations in the outcome variable as the dichotomous variable goes from 0 to 1. Note the `Std.lv` only standardized the latent variable.  For comp, we can interpret the unstandardized pattern coefficient as "we would expect a .926 unit increase in comp for a 1 unit increase the verbal factor". 
+Because all of our latent variables are continuous, we can use `Std.all` for all the variables (which standardizes both the observed and latent variables). The interpretation is the same as beta weights. For example, for info, 0.760 means for a 1 standard deviation in verbal, the expected increase in info is 0.760 standard deviations. If we square these that is the proportion of the manifest variable explained by the factor (i.e r-squared) because we have a simple solution.  If we had dichotomous predictor variables, we would use `Std.lv`, which represents the expected difference/change in standard deviations in the outcome variable as the dichotomous variable goes from 0 to 1. Note the `Std.lv` only standardized the latent variable.  For comp, we can interpret the unstandardized pattern coefficient as "we would expect a .926 unit increase in comp for a 1 unit increase the verbal factor". 
 
 Large standardized pattern coefficients also suggest convergent validity. Kline's criteria is that the overwhelming majority of these should be greater than .70 (i.e, share 50% or more of their variance is explained by the factor). This is a reasonable assertion. Based on this criteria, would you say we have convergent validity?
 
@@ -362,7 +362,7 @@ plot(cfa.cooks)
 There are definitely a few observations which are quite far from the rest. Let's see if the results change if we drop the value with the largest Cook's distance.
 
 ```{r}
-which(cfa.cooks$gCD )
+which.max(cfa.cooks$gCD)
 cfa.cooks$gCD[76]
 fit.emp.no76 <- cfa(iq.cfa.emp, wiscr[-c(76),])
 summary(fit.emp.no76)
