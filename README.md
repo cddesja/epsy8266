@@ -2,9 +2,9 @@
 # Welcome to EPsy 8266
 
 ### Announcements
+* Syllabus updated to reflect new resubmission policy.
 * Instructions for the final project are now posted.
 * Computer Lab 4 is now posted and is due on 3/14. Please remember to submit via Canvas.
-* Computer Lab 3 is now posted and is due on 2/28. Please remember to submit via Canvas.
 
 
 ### Syllabus
