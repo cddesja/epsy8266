@@ -7,9 +7,9 @@
 - [CFA activity](https://github.com/cddesja/epsy8266/raw/master/course_materials/activities/cfa_activity.Rmd)
 
 # Data
-[Holzinger & Swineford (1939)](https://github.com/cddesja/epsy8266/raw/master/course_materials/data/HolzingerSwineford1939.csv)
-[UWash Twin Data](https://github.com/cddesja/epsy8266/raw/master/course_materials/data/wuschiz.csv)
-[WISCR]((https://github.com/cddesja/epsy8266/raw/master/course_materials/data/wiscsem.sav)
+- [Holzinger & Swineford (1939)](https://github.com/cddesja/epsy8266/raw/master/course_materials/data/HolzingerSwineford1939.csv)
+- [UWash Twin Data](https://github.com/cddesja/epsy8266/raw/master/course_materials/data/wuschiz.csv)
+- [WISCR](https://github.com/cddesja/epsy8266/raw/master/course_materials/data/wiscsem.sav)
 <p align="center">
 <a href="https://cddesja.github.io/epsy8266">Go Back</a>
 </p>

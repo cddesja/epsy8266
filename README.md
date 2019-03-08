@@ -11,7 +11,7 @@
 The most current course syllabus can be downloaded [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/epsy8266_syllabus_s2019.pdf)
 
 ### Final Project
-Instructions for the final project are [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/activities/final_assigment.pdf)
+Instructions for the final project are [here](https://github.com/cddesja/epsy8266/raw/master/course_materials/activities/final_assignment.pdf)
 
 ### Technology Requirements
 * [R](https://www.r-project.org/)
@@ -32,6 +32,9 @@ To view and download the in-class activities, [click here](activities.md)
 
 ### Computer Lab
 To view and download the computer labs, [click here](labs.md)
+
+### R scripts
+R codes used in the lecture notes are [available here](scripts.md)
 
 
 
