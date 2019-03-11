@@ -16,9 +16,9 @@ Instructions for the final project are [here](https://github.com/cddesja/epsy826
 ### Technology Requirements
 * [R](https://www.r-project.org/)
 * [RStudio](https://www.rstudio.com/)
-* lavaan, boot, semPlot, and devtools packages. Within R, type
+* lavaan, semTools, boot, semPlot, and devtools packages. Within R, type
 ```r
-install.packages(c("lavaan", "boot", "devtools", "semPlot"))
+install.packages(c("lavaan", "boot", "devtools", "semPlot", "semTools"))
 ```
 
 ### Course Notes
