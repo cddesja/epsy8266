@@ -2,16 +2,16 @@
 
 # read in data and load the lavaan package ----
 library(lavaan) 
-hs_data <- read.csv("https://github.com/cddesja/epsy8266/raw/master/course_materials/data/HolzingerSwineford1939.csv")
+hs.data <- read.csv("https://github.com/cddesja/epsy8266/raw/master/course_materials/data/HolzingerSwineford1939.csv")
 
 # Below is the basic syntax for a CFA using lavaan. Note, we are using lavaan.
 # First, thing we need to add identify this model by adding a scale.
 # How can we do this below?
 
 # congeneric ----
-mod_con <- '
+mod.con <- '
   # define the latent variable, verbal
-  verbal =~ general + paragrap + sentence + wordc + wordm
+  verbal =~ 1*general + paragrap + sentence + wordc + wordm
   
   # factor variance, phi
   verbal ~~ verbal
@@ -23,16 +23,16 @@ mod_con <- '
   wordc ~~ wordc
   wordm ~~ wordm
 '
-fit_con <- lavaan(mod_con, hs_data)
-summary(fit_con)
+fit.con <- lavaan(mod.con, hs.data)
+summary(fit.con)
 
 
 
 # tau-equivalent ----
 # What do we need to do now?
-mod_tau <- '
+mod.tau <- '
   # define the latent variable, verbal
-  verbal =~ general + paragrap + sentence + wordc + wordm
+  verbal =~ 1*general + 1*paragrap + 1*sentence + 1*wordc + 1*wordm
   
   # factor variance, phi
   verbal ~~ verbal
@@ -44,36 +44,36 @@ mod_tau <- '
   wordc ~~ wordc
   wordm ~~ wordm
 '
-fit_tau <- lavaan(mod, hs.data)
-summary(fit_tau)
-anova(fit_tau, fit_con)
+fit.tau <- lavaan(mod.tau, hs.data)
+summary(fit.tau)
+anova(fit.tau, fit.con)
 
 
 
 # parallel-equivalent ----
 # What do we need to do now?
-mod_par <- '
+mod.par <- '
   # define the latent variable, verbal
-  verbal =~ general + paragrap + sentence + wordc + wordm
+  verbal =~ 1*general + 1*paragrap + 1*sentence + 1*wordc + 1*wordm
   
   # factor variance, phi
   verbal ~~ verbal
   
   # error terms 
-  general ~~ general
-  paragrap ~~ paragrap
-  sentence ~~ sentence
-  wordc ~~ wordc
-  wordm ~~ wordm
+  general ~~ e1*general
+  paragrap ~~ e1*paragrap
+  sentence ~~ e1*sentence
+  wordc ~~ e1*wordc
+  wordm ~~ e1*wordm
 '
-fit_par <- lavaan(mod_par, hs_data)
-anova(fit_par, fit_tau)
+fit.par <- lavaan(mod.par, hs.data)
+anova(fit.par, fit.tau)
 
 
 
 # composite reliability ----
 # how do we calculate it from the parameter estimates output?
-params_fit <- parameterEstimates(fit_con)
+params.fit <- parameterEstimates(fit.con)
 
 
 
@@ -104,7 +104,7 @@ params_fit <- parameterEstimates(fit_con)
 #' Assumes simple structure
 #' @param x a fitted lavaan model
 #' 
-comp_reliab <- function(x){
+comp.reliab <- function(x){
   # extract the parameter estimates
   ests <- data.frame(lhs = x@ParTable$lhs, 
                      op = x@ParTable$op,
@@ -120,20 +120,20 @@ comp_reliab <- function(x){
   
   # calculate the reliabilities
   for(i in 1:length(lf)){
-    man_vars <- subset(ests, lhs == lf[i] & op == "=~", select = rhs, drop = TRUE)
-    sum_pc <- sum(subset(ests, lhs == lf[i] & rhs %in% man_vars, select = est))^2
-    fact_var <- subset(ests, lhs == lf[i] & rhs == lf[i], select = est, drop = TRUE)
-    error_var <- sum(subset(ests, lhs %in% man_vars & rhs %in% man_vars, select = est))
-    rel[i] <- (sum_pc * fact_var) / (sum_pc * fact_var + error_var)
+    man.vars <- subset(ests, lhs == lf[i] & op == "=~", select = rhs, drop = TRUE)
+    sum.pc <- sum(subset(ests, lhs == lf[i] & rhs %in% man.vars, select = est))^2
+    fact.var <- subset(ests, lhs == lf[i] & rhs == lf[i], select = est, drop = TRUE)
+    error.var <- sum(subset(ests, lhs %in% man.vars & rhs %in% man.vars, select = est))
+    rel[i] <- (sum.pc * fact.var) / (sum.pc * fact.var + error.var)
   }
   
   # print the reliability
   rel
 }
-comp_reliab(fit_con)  
+comp.reliab(fit.con)  
 
 # Alternatively (more easily) via semTools
-semTools::reliability(fit_con) # we want omega 
+semTools::reliability(fit.con) # we want omega 
 # note, you also get average variance extracted (avevar) printed. 
 
 
