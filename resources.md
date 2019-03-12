@@ -31,6 +31,10 @@
 
 # SEM papers
 - [Leslie Hayduk's call for a 5th Ed. for Kline](https://journals.library.ualberta.ca/csp/index.php/csp/article/viewFile/2016-K/21437)
+- [Houghton & Jinkerson, 2007)](https://www.jstor.org/stable/25092987)
+- [Chang, Chi, & Miao, 2007)](https://www.sciencedirect.com/science/article/pii/S0001879106000959)
+
+
 
 <p align="center">
 <a href="https://cddesja.github.io/epsy8266">Go Back</a>

@@ -1,7 +1,7 @@
 # Equivalence, reliability, and ordinal indicators 
 
 # read in data and load the lavaan package ----
-library(lavaan)
+library(lavaan) 
 hs_data <- read.csv("https://github.com/cddesja/epsy8266/raw/master/course_materials/data/HolzingerSwineford1939.csv")
 
 # Below is the basic syntax for a CFA using lavaan. Note, we are using lavaan.
@@ -143,7 +143,7 @@ lsat6 <- data.frame(psych::lsat6)
 lsat.mod <- "
   lsat =~ Q1 + Q2 + Q3 + Q4 + Q5
 "
-lsat.fit <- cfa(lsat.mod, lsat6, ordered = paste0("Q", 1:5))
+lsat.fit <- cfa(lsat.mod, lsat6, ordered = paste0("Q", 1:5), parameterization = "<INSERT>")
 summary(lsat.fit)
 
 
