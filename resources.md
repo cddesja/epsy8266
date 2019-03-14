@@ -31,9 +31,9 @@
 
 # SEM papers
 - [Leslie Hayduk's call for a 5th Ed. for Kline](https://journals.library.ualberta.ca/csp/index.php/csp/article/viewFile/2016-K/21437)
-- [Houghton & Jinkerson, 2007)](https://www.jstor.org/stable/25092987)
-- [Chang, Chi, & Miao, 2007)](https://www.sciencedirect.com/science/article/pii/S0001879106000959)
-
+- [Houghton & Jinkerson. (2007). Constructive Thought Strategies and Job Satisfaction: A Preliminary Examination](https://www.jstor.org/stable/25092987)
+- [Chang, Chi, & Miao. (2007). Testing the relationship between three-component organizational/occupational commitment and organizational/occupational turnover intention using a non-recursive model](https://www.sciencedirect.com/science/article/pii/S0001879106000959)
+- [Chen, West, & Sousa. (2010). A Comparison of Bifactor and Second-Order Models of Quality of Life](https://www.tandfonline.com/doi/abs/10.1207/s15327906mbr4102_5)
 
 
 <p align="center">

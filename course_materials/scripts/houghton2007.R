@@ -1,10 +1,11 @@
-                                        # Houghton & Jinkerson (2007)
+# Recreate Houghton & Jinkerson's (2007) model
+# In this activity, I have given you the data, however, you need to convert it
+# so that lavaan can use it.
+# You then need to fit and estimate the model in lavaan
 N <- 269
 M <- c(3.96, 4.12, 4.13, 3.97, 3.61, 3.3, 2.13, 1.63, 1.99, 3.86, 3.62, 3.5)
 SD <- c(.939, 1.017, .937, .562, .76, .524, .585, .609, .731, .711, 1.124, 1.001)
-
 varNames <- c("jdiw1", "jdiw2", "jdiw3", "for", "uf1", "uf2", "das1", "das2", "das3", "eba","st", "mi")
-
 lowTri <- "
 1
 .668 1
@@ -19,11 +20,3 @@ lowTri <- "
 .061 .028 -.035 -.058 -.051 -.003 -.04 -.04 -.018 .284 1
 113 .174 .059 .063 .138 .044 -.119 -.073 -.084 .563 .379 1
 "
-
-## Get data into a format lavaan can use
-## Fit the model in lavaan
-
-
-
-
-

@@ -1,0 +1,167 @@
+---
+title: "Computer Lab 3 - ANSWER KEY"
+author: "Your Name"
+date: "2/17/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Purpose
+The purpose of this lab is to give you experience performing an observed variable path analysis with a model that is a bit more realistic (complex) than what we have covered in class.
+
+## Background/Problem/Data 
+A student comes to you needing help on an SEM. You've done SEM before so you ask them for their data and their conceptual model. The student tells you they are interested in understanding current math achievement (`Achieve`) and factors that are related to it. They have measured prior math ability (`Ability`), family background (`Family`) (i.e., SES), student motivation (`Motive`), and coursework grades (`Course`). Their research question is a little vague but they have a conceptual model (see conceptualModel.pdf) and it looks like an SEM would be appropriate. The student doesn't have raw data, believes there were 250 people in the study, and instead they provide you with a correlation matrix. After reminding them how important it is to have a covariance matrix or the raw data, you agree to help them. Their correlation matrix is below.
+
+|         | Family | Ability | Motive | Course | Achieve |
+|--------:|--------|---------|--------|--------|---------|
+| Family  | 1      |         |        |        |         |
+| Ability | .417   | 1       |        |        |         |
+| Motive  | .190   | .205    | 1      |        |         |
+| Course  | .372   | .498    | .375   | 1      |         |
+| Achieve | .417   | .737    | .255   | .615   | 1       |
+
+#### Question 1: Interpret their conceptual model. Keep in mind that SEM is a causal modeling framework. (5 pts)
+
+Answers can vary, but should include the following:
+
+- There is a direct cause of family on ability, course, motive, and achieve. 
+- There is a direct cause of ability on course, motive, and achieve.
+- There is a direct cause of motive on course and achieve.
+- There is a direct cause of course on achieve. 
+- In the model, ability, motive, and course are mediators (i.e., indirect causally effects) of the relationships between family and achieve. Course and motive are mediators of the relationship between ability and achieve, and course is mediator of the relationship between motive and achieve.
+
+#### Question 2: Which variables are exogenous and which variables are endogenous in their conceptual model? (2 pt)
+
+- Only family is exogenous.
+- Ability, motive, course, and acheive are endogenous. 
+
+#### Question 3: Is this model just identified, under identified, or over identified? Show how you know. Given this, can you comment on the global fit of their theoretical model? (2 pts).
+
+- The model is just identifed.
+- There are 15 unique "pieces" of information in the covariance matrix. 
+- In our model, there are 10 direct paths, 4 latent disturbances, and 1 exogenous variance. This sums up to 15 free parameter.
+- 15 - 15 = 0, therefore, there are no df and the model is just identifed.
+
+#### Question 4: How many indirect effects of family are there on achieve? Please write the names of the indirect effects as products of the path labels. (2 pts)
+
+- There are 7 indirect effects.
+- ah, aeg, abfg, abj, dg, cfg, cj
+
+#### Question 5: Using the `getCov()` function (or another method if you prefer), please read the correlation matrix into R and print it below. (1 pt)
+
+```{r}
+library(lavaan)
+lower<-'
+1    
+.417, 1
+.190, .205, 1
+.372, .498, .375, 1
+.417, .737, .255, .615, 1'
+achieve.cov <- getCov(lower, names = c("Family", "Ability", "Motive", "Course", "Achieve"))
+achieve.cov
+```
+
+#### Question 6: Please fit this model using `lavaan`. Make sure to label the variables exactly the same way they are labeled in the diagram and please make sure to request all the indirect effects of family on achieve. You do not need to do this for the other variables. To use the sample correlation with the `sem` function you need to specify the `sample.cov` argument setting it equal to the name of your correlation matrix and to specify the number of observations, you need to use the `sample.nobs` argument and set it equal to the number of observation. Write at all the code below and paste all of the output from the `summary` function with the argument that `ci = TRUE` below (this provides a 95% confidence interval). (2 pts)
+
+```{r}
+mod <- '
+Achieve ~ g*Course+j*Motive+h*Ability+i*Family
+Course ~ f*Motive+e*Ability+d*Family
+Motive ~ b*Ability+c*Family
+Ability ~ a*Family
+
+# indirect effects
+aeg:=a*e*g
+ah:=a*h
+abj:= a*b*j
+abfg:=a*b*f*g
+cfg:=c*f*g
+cj:=c*j
+dg:=d*g
+'
+fit <-sem(mod, sample.cov = achieve.cov, sample.nobs = 250)
+summary(fit, ci = TRUE)
+```
+
+
+#### Question 7: Please provide an interpretation of the model results. Specifically, interpret all the direct paths to achieve and the indirect paths for family on achieve but do not comment on significance. Use strong causal language like the causal effect of X on Y is .XXX. (5 pts)
+
+There was a significant causal effect of course on achieve (controlling for motive, ability, and family) and it was such that for a 1 SD increase in course, we expect a .310 SD increase in achieve (holding the aforementioned variables constant). There was not a significant causal effect of motive or family on achieve (holding the otehr variables constant) and there was a significant causal effect of ability on achieve (controlling for the other variables) such that for a 1 SD increase in ability, we expect a .551 SD incrase in achieve. The only significant indirect causal effect were for effect of family through ability and course onto achieve, of family through ability on achieve, and from family through course onto achieve. These effects ranged from .048 to .230. The other effects were non-significant. This is indication of medation (they don't need to say this). 
+
+#### Question 8: Are there non-causal effects (either spurious or correlational) of family on achieve in the model? If so, please report their values. (1 pt).
+
+Nope!
+
+#### Question 9: Calculate the bivariate correlation between family and achieve using your output for Question 6. (1 pt)
+
+The bivariate correlation was 0.417. This is the sum of the direct effect (.069) and the 7 indirect effects. So, it was (within rounding):
+
+```{r}
+.069 + .048 + .230 + .001 + .005 + .010 + .002 + .051
+```
+
+#### Question 10: Bootstrap the indirect effects for family on achieve. Take a bootstrap of 2000 samples, set a seed (for reproducibility), and then report the 95% confidence intervals for them. See the course notes for code to do this. (2 pts)
+
+```{r, cache = TRUE}
+set.seed(1234) # students should set their own seed, take off a .25 or so, if they don't.
+
+# you are looking for the row numbers that correspond to the indirect effects.
+first <-  16   # Locate these numbers and write the first one here
+second <- 22  # Locate these numbers and write the second one here
+# We want to extract and save their estimates. The "est" part.
+
+# number of bootstrap samples to take
+k <- 2000
+
+# sample size
+n <- 250
+
+# number of indirect effects you calculated above
+effs <- 7 # put the number of indirect effects here that you calculated in question 4
+
+# this initializes a matrix that will save your bootstrapped samples (each row)
+# and the parameter estimates (each column).
+est.par <- matrix(nrow = k,
+                  ncol = effs) 
+
+for(i in 1:k){
+  # generate a multivariate normal random sample
+  tmp <- MASS::mvrnorm(n, mu = rep(0, ncol(achieve.cov)), Sigma = achieve.cov)
+
+  # convert it to a data.frame
+  tmp <- as.data.frame(tmp)
+
+  # estimate the model
+  # assuming the model you defined earlier is named mod
+  fit.tmp <-sem(mod, data = tmp)
+
+ # save the parameter estimates 
+  est.par[i, ] <- parameterEstimates(fit.tmp)[first:second, "est"]
+}
+
+# convert the matrix to a data.frame
+est.par <- as.data.frame(est.par)
+
+# name your parameters
+colnames(est.par) <- parameterEstimates(fit.tmp)[first:second, "label"]
+
+# you may find this piece of code very helpful, too (HINT)
+apply(est.par, 2, quantile, probs = c(.025, .975))
+```
+
+Students should write out these CIs for the indrect effects. They don't need to interpret them. It would be ideal if they use the language about what the indirect effect was (e.g., the 95% CI for the indirect effect of family on achieve through ability was .163, .307, but not necessary).
+
+#### Question 11: What conclusions can you make about the nature of mediation for family on achieve? For example, is there evidence of mediation? Does the causal link between family and achieve go through other variables? Use your results from Question 10 to support your answer. (2 pts)
+
+Yes, there is evidence of mediation. There is evidence of complete mediation because the ink between family and achieve is not significant (p > .05) and the 95% CIs for the indirect effects through ability and course (aeg), through ability (ah), through ability, motive, and course (abfg), and course (dg) do not include 0. 
+
+__Ethan, abfg might include 0 for some people depending on their seed. So, just make sure it maps onto what they report for Q10__.
+
+#### Question 12: Do you think their causal model is ``reasonable"? Why? Note, there isn't necessarily a right answer here, but you need to support your answer. (3 pts)
+
+Answers can vary. In my opinion, this is a reasonable model. Most of the direct causal effects are significant, theoretically the model seems sensible and while we can't assess fit because it's just identified we could consider adding some constraints that would show the model is pretty reasonable. Of course there are other equally valid explanations, but statistically there is nothing to suggest this model is egregious or awful. 
+
+
