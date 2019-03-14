@@ -2,7 +2,7 @@
 # In this activity, I have given you the data, however, you need to convert it
 # so that lavaan can use it.
 # You then need to fit and estimate the model in lavaan
-N <- 269
+N <- 263
 M <- c(3.96, 4.12, 4.13, 3.97, 3.61, 3.3, 2.13, 1.63, 1.99, 3.86, 3.62, 3.5)
 SD <- c(.939, 1.017, .937, .562, .76, .524, .585, .609, .731, .711, 1.124, 1.001)
 varNames <- c("jdiw1", "jdiw2", "jdiw3", "forv", "uf1", "uf2", "das1", "das2", "das3", "eba","st", "mi")
