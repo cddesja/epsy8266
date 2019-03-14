@@ -2,9 +2,9 @@
 # Welcome to EPsy 8266
 
 ### Announcements
-* Syllabus updated to reflect new resubmission policy.
-* Instructions for the final project are now posted.
+* Instructions for the final project are updated (3/14). Please make sure it says March 12, 2019.
 * Computer Lab 4 is now posted and is due on 3/14. Please remember to submit via Canvas.
+* Syllabus updated to reflect new resubmission policy.
 
 
 ### Syllabus
