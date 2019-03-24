@@ -112,9 +112,9 @@ plot(power ~ sample.size, calc.power, type = "l", xlab = "sample size")
 
 Note, that the power curve won't necessarily be smooth and because of simulation error, larger sample sizes could potentially result in smaller power, which wouldn't happen if you increased the number of replicates. All simulations introduce error. 
 
-### Question 1: Based on the plot, what sample size do you need to have a power of at least .80 to detect a correlation of .2 between X and Y? (1 pt)
+### Question 1: Based on the plot, what sample size do you need to have to have a power of at least .80 to detect a correlation of .2 between X and Y? (1 pt)
 
-### Question 2: Now copy all the code above and paste it below and then adapt the `pop.mod` code to determine the sample size you need to get a power of .8 to detect a correlation of .4 between X and Y and change the sample sizes you'll investigate to be from 10 to 100 by 10. Hint, this requires you to change two things in the code! Run the simulation below and then report the minimum sample size need to have a power of .80. (3 pts)
+### Question 2: Now copy all the code above and paste it below and then adapt the `pop.mod` code to determine the sample size you need to get a power of .8 to detect a correlation of .4 between X and Y and change the sample sizes you'll investigate from 10 to 100 by 10. Hint, this requires you to change two things in the code! Run the simulation below and then report the minimum sample size need to have a power of .80. (3 pts)
 
 ### Question 3: If you had a sample size of 80, what would you expect your power to detect a correlation of .4 between X and Y to be using a z-test? (1 pt)
 
@@ -174,9 +174,9 @@ plot(power ~ indirect, calc.power, type = "l", xlab = "indirect effect")
 
 ### Question 4: What is the MDES that achieves a power of at least .80 based on the power analysis? (1 pt)
 
-### Question 5: Does the relationship of X on Y have an impact on this? Conduct a power analysis by changing this relationship from from .3 to .6 for X on Y. Report the MDES that achieves a power of at least .80 for the z-test of the indirect effect. (3 pts)
+### Question 5: Does the relationship of X on Y have an impact on this? Conduct a power analysis by changing the relationship from .3 to .6 for X on Y. Report the MDES that achieves a power of at least .80 for the z-test of the indirect effect. (3 pts)
 
-### Question 6: Repeat this simulation but set the relationship from .6 to 1.  Report the minimum size of the indirect effect that achieves a power of at least .80. (3 pts)
+### Question 6: Repeat this simulation but set the relationship from .6 to 1 for X on Y.  Report the MDES that achieves a power of at least .80. (3 pts)
 
 ### Question 7: Did changing the relationship between X and Y appear to have an impact on the z-test of the indirect effect? (1 pts)
 
@@ -200,7 +200,7 @@ pop.mod <- "
 
 ### Question 9: What are the values for the structural parameters? (1 pt)
 
-### Question 10: Write the syntax for the correct lavaan model that you will fit based on the pop.mod and call that the model, correct.mod. (1 pt)
+### Question 10: Write the syntax for the correct lavaan model that you will fit based on pop.mod and call that the model, correct.mod. (1 pt)
 
 ### Question 11: For the misspecified model rather than having x7 load onto f3 have the x7 manifest variable load onto f2 and keep the rest of the model the same. Write the syntax for the misspecified model below and save it as mis.mod. (1 pt)
 
@@ -252,11 +252,11 @@ sim.results <- data.frame(N = N,
 sim.results
 ```
 
-For the simulation you can ignore the warning message, but what does the warning message indicate? If this was your study, should you ignore this message? What might be the causes of this message? Just food for thought ...
+For the simulation you can ignore the warning messages, but what do the warning messages indicate? If this was your study, should you ignore these messages? What might be the causes of these messages? Just food for thought ...
 
 ### Question 12: How does the type I error rate of the chi-square test of model fit change as a function of the sample size for the correctly specified model? Please plot this below. Is the type I error always approximately .05? (2 pts)
 
-### Question 13: Given the relationship you between power and sample size, do the results from Question 12 mirror this? What would you expect would have to type I error rate as sample size increases? (2 pt)
+### Question 13: Given what you've been taught about the relationship between power and sample size, do the results from Question 12 mirror this? What would you expect happen to the type I error rate as sample size increases? (2 pt)
 
 ### Question 14: How does the power of the chi-square test of model fit change as a function of the sample size for the misspecified model? Please plot this below. Is the power always approximately .80 or greater? (2 pt)
 
