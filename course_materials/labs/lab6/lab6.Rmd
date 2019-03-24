@@ -1,0 +1,267 @@
+---
+title: "Computer Lab 6 Answer Key"
+author: "<YOUR NAME>"
+date: "4/9/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## PLEASE NOTE -- Computationally intensive lab
+Be careful with compiling this report! It will take a very long time. Please make sure to run your code interactively before compiling and make sure your code is correct. Then compile it. I would also recommend setting the argument, `cache = TRUE` at the top of each chunk once you're sure you have the code correct. You can do this between by doing the following ```{r, cache = TRUE}   
+
+Do not wait till the last minute to complete this lab!!!
+
+## Purpose
+
+The purpose of this lab is to gain experience running a power analysis using simulation. We'll generate data using the `simulateData` function available in the `lavaan` package. __Please note this lab could take a while to complete just because the simulations can take a while!__
+
+When we do power analyses we generally want to determine either the sample size or the minimum detectable effect size (MDES) for a given test that has a power of at least .80. Typically in power analyses we set alpha (our type I error rate) to .05 (our de facto threshold for determining statistical significance). 
+
+For the simulation-based power analyses we'll do in this lab, you will run 1000 replicates (i.e., you will generate data, fit a model, and save a p-value 1000 times and then you will pool your findings over these replicates). Note, if you were doing this for real, you should probably use 2000 or 5000 replicates. We are using 1000 replicates because anymore will take an extremely long time to run! 
+
+The number of replicates out of the 1000 replicates where the p-value is less than alpha (i.e., .05) is an empirical estimate of power. So, if we're running a power analysis for a given test and 900 of the 1000 replicates for a certain test have a p-value less than .05, then our power is .90. Please keep in mind that power is always specific to a certain test. In our simulations, we'll investigate z-tests and the chi-square test of model fit. 
+
+Before getting started, please read the help page for `simulateData` and make sure you pay attention to the Examples section and the `#specify population model` part in particular.
+
+```{r, eval = FALSE}
+?simulateData
+```
+
+Note, that the `simulateData` function assumes the data are multivariate normal.
+
+The population model is always our true model. Or if you're doing this for a grant proposal or a dissertation prospectus, this would be your assumed model. You would derive this model based on research or content expertise. 
+
+In the lab, we'll run three set of power analyses. 
+
+## Correlation
+
+For the first power analysis, we'll figure out the power of a z-test for determining whether the correlation between two variables, X and Y, is significant. The first thing we need to specify is the population model (again this is our our true model, which we'll call `pop.mod` below). Let's say in the population you believe the correlation between X and Y is .2. To set this up in `lavaan`, you would do the following:
+
+```{r}
+library(lavaan)
+pop.mod <- '
+Y ~~ .2*X # set correlation to .2
+
+# fix variance of X and Y to one
+# so they are standardized
+Y ~~ 1*Y
+X ~~ 1*X
+'
+```
+
+Now, what we want to do is find out the minimum sample size necessary to have a power of at least .80 of detecting a correlation of .2 between X and Y. Imagine, we're applying for a grant and we need to justify our sample size. Well that's exactly what the power analysis would do!
+
+So, what we'll do is pass a range of sample size from 100 - 200 by 20 (so 100, 120, ..., 180, 200) and then we'll plot the empirical power as a function of the sample size. To do this you'll use the code below and modify it shortly. The comments within the code should help. 
+
+```{r}
+# the range of sample size we want to investigate
+N <- seq(100, 200, 20) 
+
+# The lavaan model we'll fit
+mod <- '
+Y ~~ X
+
+# again, these are just to make sure our est. is 
+# a correlation NOT a covariance
+Y ~~ 1*Y 
+X ~~ 1*X 
+'
+
+# we've always got to set a seed
+set.seed(1235)
+
+# this is our simulation function
+# it looks tricky but it really isn't
+# It says for the range of sample sizes do the following ...
+run.sim <- sapply(N, function(N) { 
+  
+  # repeat a function 1,000 times
+  replicate(n = 1000, expr = {
+    
+    # generate our data with the sample size set to N
+    tmp.data <- simulateData(pop.mod, sample.nobs = N)
+    
+    # estimate the model (this should look very familar)
+    fit <- sem(mod, tmp.data)  
+    
+    # extract the parameter estimates
+    params <- parameterEstimates(fit)
+    
+    # return just the p-value from the z-test of the correlation between Y and X
+    subset(params, lhs == "Y" & rhs == "X", "pvalue", drop = TRUE)
+  })
+})
+
+# you can print 
+run.sim
+# to see what it contains.
+
+# Now calculate the correlation by the sample size
+calc.power <- data.frame(sample.size = N,
+                         # for each column (level of sample size) find the proportion of p-values < .05
+                         power = apply(run.sim, 2, function(x) mean(x < .05)))
+# what does this look like
+calc.power
+
+# now lets plot it
+plot(power ~ sample.size, calc.power, type = "l", xlab = "sample size")
+```
+
+Note, that the power curve won't necessarily be smooth and because of simulation error, larger sample sizes could potentially result in smaller power, which wouldn't happen if you increased the number of replicates. All simulations introduce error. 
+
+### Question 1: Based on the plot, what sample size do you need to have a power of at least .80 to detect a correlation of .2 between X and Y? (1 pt)
+
+### Question 2: Now copy all the code above and paste it below and then adapt the `pop.mod` code to determine the sample size you need to get a power of .8 to detect a correlation of .4 between X and Y and change the sample sizes you'll investigate to be from 10 to 100 by 10. Hint, this requires you to change two things in the code! Run the simulation below and then report the minimum sample size need to have a power of .80. (3 pts)
+
+### Question 3: If you had a sample size of 80, what would you expect your power to detect a correlation of .4 between X and Y to be using a z-test? (1 pt)
+
+## Mediation 
+
+Next, we will run a simulation of a simple mediation model where X causes M and X and M cause Y (i.e., M is the mediator). In the simulation below, we will determine the MDES for the indirect effect (ab) assuming a sample size of 100 again using the z-test. Note, we really shouldn't use the z-test but instead should do __bootstrapping__, however, for the sake of your computers, your energy bill, and your time we will just do a power analysis with the z-test. The generally findings should be similar. 
+
+We'll examine the power by varying the relationship between X on M between .1 to 1 by 1 (.1, .2, ..., .9, 1), while holding the relationship between M on Y to a fixed value.
+
+```{r} 
+# set sample size
+N <- 100
+a <- seq(.1, 1, by = .1) # we will vary the relationship of X on M
+
+# set the seed
+set.seed(1235)
+
+# The lavaan model we'll fit
+mod <- '
+M ~ a*X 
+Y ~ b*M + c*X
+ab := a*b
+'
+
+# This time we're pass a NOT the sample size
+# b/c it's fixed to 100
+run.sim <- sapply(a, function(a) { 
+  replicate(n = 1000, expr = {
+    
+    # notice the population model is now here!
+    pop.mod <- paste0("
+      M ~ ", a, "*X # takes the value of a and multiples it by X
+      Y ~ .3*M + .3*X") # this values correspond to "b" and "c"
+    
+    # simulate the data 
+    tmp.data <- simulateData(pop.mod, sample.nobs = N)
+    
+    # fit the model
+    fit <- sem(mod, tmp.data)  
+    
+    # save the parameter estimates
+    params <- parameterEstimates(fit)
+    
+    # return the p-value from the z-test of the indirect effect
+    subset(params, lhs == "ab", "pvalue", drop = TRUE)
+  })
+})
+
+# calculate power
+calc.power <- data.frame(indirect = a * .3,
+                         power = apply(run.sim, 2, function(x) mean(x < .05)))
+calc.power
+
+# plot it!
+plot(power ~ indirect, calc.power, type = "l", xlab = "indirect effect")
+```
+
+### Question 4: What is the MDES that achieves a power of at least .80 based on the power analysis? (1 pt)
+
+### Question 5: Does the relationship of X on Y have an impact on this? Conduct a power analysis by changing this relationship from from .3 to .6 for X on Y. Report the MDES that achieves a power of at least .80 for the z-test of the indirect effect. (3 pts)
+
+### Question 6: Repeat this simulation but set the relationship from .6 to 1.  Report the minimum size of the indirect effect that achieves a power of at least .80. (3 pts)
+
+### Question 7: Did changing the relationship between X and Y appear to have an impact on the z-test of the indirect effect? (1 pts)
+
+## Structural Equation Modeling
+
+For the final set of simulations, we are going to examine how the chi-square test of model fit is affected when we specify the model correctly and when we misspecify the model. And we will see if this is affect by our sample size, which we'll vary from from 200 to 1000 by 50. When the __model is misspecified__, we want our power to be .80 and when the model is __correctly specified__ we want to fail to reject the null hypothesis and want our type I error rate (the proportion of times that p < .05) to be .05 because we know that the null hypothesis is true. 
+
+First, we will again define the true model, which we will save as pop.mod as we have done throughout.
+
+```{r}
+pop.mod <- "
+  f1 =~ 1*x1 + 0.8*x2 + 1.2*x3
+  f2 =~ 1*x4 + 0.5*x5 + 1.5*x6
+  f3 =~ 1*x7 + 0.7*x8 + 0.9*x9
+
+  f3 ~ 0.5*f1 + 0.8*f2     
+"
+```
+
+### Question 8: Why are there 1s in front of x1, x4, and x7? (1 pt)
+
+### Question 9: What are the values for the structural parameters? (1 pt)
+
+### Question 10: Write the syntax for the correct lavaan model that you will fit based on the pop.mod and call that the model, correct.mod. (1 pt)
+
+### Question 11: For the misspecified model rather than having x7 load onto f3 have the x7 manifest variable load onto f2 and keep the rest of the model the same. Write the syntax for the misspecified model below and save it as mis.mod. (1 pt)
+
+Now we will run the simulation, you do not need to modify any of this code, just interpret the output. Unfortunately, this will take a while to run. Sorry!
+
+```{r}
+# set the sample size 
+N <- seq(200, 1000, by = 100)
+
+# again set the seed
+set.seed(1234)
+
+# this is for the correct model
+cor.sim <- sapply(N, function(N) { 
+  replicate(n = 1000, expr = {
+    
+    # generate the data
+    tmp.data <- simulateData(pop.mod, sample.nobs = N)
+    
+    # fit the correct mod
+    cor.fit <- sem(correct.mod, tmp.data)  
+  
+    # extract the p-value from the chi-square test of model fit
+    chi.p <- fitmeasures(cor.fit, "pvalue")
+    chi.p
+  })
+})
+
+# set the seed
+set.seed(1234)
+wrong.sim <- sapply(N, function(N) { 
+  replicate(n = 1000, expr = {
+    
+    # generate the data ---
+    tmp.data <- simulateData(pop.mod, sample.nobs = N)
+
+    # fit the misspecified mod
+    wrong.fit <- sem(mis.mod, tmp.data)
+    
+    # extract the p-value from the chi-square test of model fit
+    chi.p <- fitmeasures(wrong.fit, "pvalue")
+    chi.p
+  })
+})
+
+sim.results <- data.frame(N = N,
+                          typeI.correct.model = apply(cor.sim, 2, function(x) mean(x < .05)),
+                          power.misspecified.model = apply(wrong.sim, 2, function(x) mean(x < .05)))
+sim.results
+```
+
+For the simulation you can ignore the warning message, but what does the warning message indicate? If this was your study, should you ignore this message? What might be the causes of this message? Just food for thought ...
+
+### Question 12: How does the type I error rate of the chi-square test of model fit change as a function of the sample size for the correctly specified model? Please plot this below. Is the type I error always approximately .05? (2 pts)
+
+### Question 13: Given the relationship you between power and sample size, do the results from Question 12 mirror this? What would you expect would have to type I error rate as sample size increases? (2 pt)
+
+### Question 14: How does the power of the chi-square test of model fit change as a function of the sample size for the misspecified model? Please plot this below. Is the power always approximately .80 or greater? (2 pt)
+
+### Question 15: What do you conclude about the chi-square test of model fit? Should you use this test for evaluating your models? Why or why not?  (2 pts)
+
+
+
+
