@@ -17,27 +17,29 @@ _Usluel, Y. K., Askar, P., & Bas, T. (2008). A Structural Equation Model for ICT
 
 The first thing you should do is download and read this manuscript. You should be able to download the article by clicking [here](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.542.4046&rep=rep1&type=pdf). If you can't find the manuscript, please contact me and I will send you a version. Once you've read the manuscript, please complete the lab.
 
+__For all the questions, please ignore that triability is missing from the covariance matrix. You do not need to mention this for the questions that ask you about Figure 1.__
+
 ### Question 1: What are the 3 hypotheses that the researchers are testing? (1 pt)
 
 ### Question 2: Assuming that Figure 1 is intended to be a path diagram, what is wrong with the paths? (1 pt)
 
-### Question 3: What is missing from Figure 1? Be specific (2 pts)
+### Question 3: What is missing from Figure 1? Be specific. (2 pts)
 
 ### Question 4: Are the data available in the paper to replicate Figure 1? (1 pt)
 
-### Question 5: What type of pattern coefficients (unstandardized or standardized) must the be showing in Figure 2? How do you know? (1 pt)
+### Question 5: What type of pattern coefficients (unstandardized or standardized) must be shown in Figure 2? How do you know? (1 pt)
 
 ### Question 6: Read in the data and print it below. Note, that when you name the variables, they can't have spaces so either use abbreviated names or use a . or _ instead of a space. (2 pts)
 
-### Question 7: Write and fit the model in Figure 1. Don't forget to label the indirect effect. (1 pt)
+### Question 7: Write and fit the model in Figure 2. Don't forget to label the indirect effect. (1 pt)
 
-### Question 8: Report and interpret the chi-square test of model fit and standard fit statistics (CFI, TLI, and RMSEA) (i.e., is this an acceptable model?). Finally, do these match the values reported by the authors? (3 pts)
+### Question 8: Report and interpret the chi-square test of model fit and the standard fit statistics (CFI, TLI, RMSEA, SRMR) (i.e., is this an acceptable model?). Do these match the values reported by the authors? (3 pts)
 
 ### Question 9: Do your estimated parameters (either loadings or structural parameters) match those report in Figure 2? Do all the indicators load onto their respective factors? Which ones don't? (2 pt)
 
-### Question 10: Using your results, and Kline's recommendations, are you indicators a good reflection of the underlying constructs? Which ones are and which ones aren't? (2 pt)
+### Question 10: Using your results, and Kline's recommendations, are the indicators a good reflection of the underlying constructs? Which ones are and which ones aren't? (2 pt)
 
-### Question 11: Report your r-squared for ICT usage. Does it match the report results in Figure 2 (1 pt)
+### Question 11: Report your r-squared for ICT usage. Does it match the results reported in Figure 2 (1 pt)
 
 ### Question 12: If your found that your results didn't match the paper's findings. Why do you think this could be? Give two reasons (2 pt)
 
