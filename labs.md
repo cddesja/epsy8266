@@ -1,5 +1,12 @@
 # Computer Labs
 
+## Lab 7
+Lab 7 is available as an Rmd file. Please note that if you prefer to use MS Word as an ouptut, you can change `html_document` to `word_document` at the top of the file where it says `output:` Make sure to download the lab7.csv file as well!
+
+- [RMarkdown version](https://github.com/cddesja/epsy8266/raw/master/course_materials/labs/lab7/lab7.Rmd)
+- [Lab 7 data](https://github.com/cddesja/epsy8266/raw/master/course_materials/labs/lab7/lab7.csv)
+
+
 ## Lab 6
 Lab 6 is available as an Rmd file. Please note that if you prefer to use MS Word as an ouptut, you can change `html_document` to `word_document` at the top of the file where it says `output:`
 

@@ -1,0 +1,71 @@
+---
+title: "Computer Lab 7"
+author: "<YOUR NAME>"
+date: "4/18/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Purpose
+
+The purpose of this lab is to fit and interpret latent growth models. The simulated data set is based on the data described [here](https://www.sciencedirect.com/science/article/abs/pii/S0005796718300585). In their study, Rohde, et al. (2018) looked at mediators of two eating disorder prevention interventions (Healthy Weight and Project Health) relative to a video control on weight gain (body mass index) and eating disorder symptoms. The simulated data set (N = 364), contains only BMI and negative affect (one of the mediators they considered) data. BMI was measured at the start of the intervention (month 0), at the end of the intervention (month 2), 6 months after the end of the intervention (month 8, i.e., 8 months since the start of the intervention), 12 months after the end of the intervention (month 14), and 24 months after the end of the intervention (month 26) and negative affect was measured only at the start of the intervention. Hint: these numbers will be important to note when you set up your model and plot your data. 
+
+```{r}
+lab7 <- read.csv("~/Documents/GitHub/epsy8266/course_materials/labs/lab7/lab7.csv")
+```
+
+### Question 1: When you are modeling *just* BMI, how many free parameters can you have to have a just identified model? What you are modeling BMI and negative affect, how many free parameters can you have to have a just identified model? (1 pt)
+
+
+### Question 2: Create a connected means plot of BMI and describe the change in BMI across the study. Hint: To do this you will need to first reshape the data. (3 pts)
+
+
+### Question 3: What is the highest order polynomial model you can fit? (1 pt)
+
+
+### Question 4: Do you think a linear, quadratic, or nonlinear curve model would fit best? Why? (1 pt)
+
+
+### Question 5: Fit a linear model for BMI where you a) constrain the error variances for the BMI manifest variables to be equal and b) ignore autocorrelation between the errors (I will refer to this model as `linear.fixed`). Hint, the 2nd unstandardized pattern coefficient for the slope factor does not have to be 1. (2 pts)
+
+
+### Question 6: Based on global fit (chi-square test of model fit, RMSEA, CFI, and SRMR) is the `linear.fixed` model a good model? (2 pts)
+
+
+### Question 7: Examine the correlation residuals and the mean residuals for the `linear.fixed` model. Do you see evidence of local misfit? (3 pts)
+
+
+### Question 8: Refit the linear model of BMI but allow the error variances of the BMI manifest variables to be free (`linear.free`). Is this model an improvement in model fit over the `linear.fixed` model? Please assess this with a chi-square test of difference. (3 pts)
+
+
+### Question 9: Based on global fit (chi-square test of model fit, RMSEA, CFI, and SRMR) is the  `linear.free` model a good model? (2 pts)
+
+
+### Question 10: Examine the correlation residuals and the mean residuals for the `linear.free` model. Do you see evidence of local misfit? (3 pts)
+
+
+### Question 11: Fit a nonlinear curve model for BMI where a) the error variances for the BMI manifest variables are free and b) you ignore autocorrelation with your errors (`nlc.model`). Does this model fit better than `linear.free` model? (3 pts)
+
+
+### Question 12. Interpret the "intercepts" of the intercept and slope factors for the `linear.free` model (2 pts).
+
+
+### Question 13. Add negative affect (neg.aff) to your model as predictor of initial BMI (the intercept factor) and change in BMI (the slope factor) and then fit this model (`linear.na`) (2 pts)
+
+
+### Question 14. Can you compare the `linear.na` model to the `linear.free` model? Why or why not? (1 pt)
+
+
+### Question 15: Based on global fit (chi-square test of model fit, RMSEA, CFI, and SRMR) is the `linear.na` a good model? (2 pts)
+
+
+### Question 16: Examine the correlation residuals and the mean residuals for the `linear.na` model. Do you see evidence of local misfit? (3 pts)
+
+
+### Question 17. 1) Please interpret the relationship between negative affect and the intercept factor and negative affect slope factor regardless of statistical significance for the `linear.na`. 2a) Report the 95% confidence interval for the effect of negative affect on the intercept factor only. Recall that the confidence interval indicate a range of values that are compatible with your data given your assumptions. 2b) Would you say any of the potential effects in the 95% CI that are compatible with your data are practically large? I am not referring to the width of this interval, but given that BMI typically ranges between 18 and 25, would you say that any of the compatible effects would be large (i.e., are there values in the interval that you would consider representing a large practical impact of negative affect on BMI at the beginning of the intervention)? (3 pts)
+
+
+### Question 18. Looking at your modification indices, do you think adding autocorrelations between the error terms of  adjacent measurements of BMI (e.g., month 0 and month 2, month 2 and month 8, and so on) would fix global model fit? (2 pts)
