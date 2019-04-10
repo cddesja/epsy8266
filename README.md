@@ -2,8 +2,8 @@
 # Welcome to EPsy 8266
 
 ### Announcements
+* Computer Lab 8 is now posted and is due on 4/30. Please remember to submit via Canvas. 
 * Computer Lab 7 is now posted and is due on 4/18. Please remember to submit via Canvas. 
-* Computer Lab 6 is now posted and is due on 4/9. THE LAB IS SIMULATION-BASED AND WILL TAKE A LOT OF COMPUTATIONAL TIME! Please remember to submit via Canvas. 
 * Instructions for the final project are updated (3/14). Please make sure it says March 12, 2019.
 * Syllabus updated to reflect new resubmission policy.
 

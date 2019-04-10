@@ -1,5 +1,10 @@
 # Computer Labs
 
+## Lab 8
+Lab 8 is available as an Rmd file. Please note that you will turn in a MS Word document and an R script. I recommend knitting the document after downloading.
+
+- [RMarkdown version](https://github.com/cddesja/epsy8266/raw/master/course_materials/labs/lab8/lab8.Rmd)
+
 ## Lab 7
 Lab 7 is available as an Rmd file. Please note that if you prefer to use MS Word as an ouptut, you can change `html_document` to `word_document` at the top of the file where it says `output:` Make sure to download the lab7.csv file as well!
 
