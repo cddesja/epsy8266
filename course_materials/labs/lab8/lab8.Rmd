@@ -15,24 +15,21 @@ For Lab 8, you have one task. I would like you to reproduce the results from the
 
 In the Word document, please include:
 
-- __The full APA citation of the article__.
-- __A path diagram(s) from the article__. This should be a screenshot of their path diagram(s) copied/pasted into Word.
-- A very brief __description of the model you will reproduce__. What hypotheses was it designed to test? 
-- __Their results__. This could be a table(s) or a path diagram(s) and should be a screenshot from their article.
-- __Being brief, describe if you were able to reproduce their results either completely, partially, or not at all__.
+- __The full APA citation of the article__. (1 pt)
+- __A path diagram(s) from the article__. This should be a screenshot of their path diagram(s) copied/pasted into Word. (1 pt)
+- A very brief __description of the model you will reproduce__. What hypotheses was it designed to test? (2 pt)
+- __Their results__. This could be a table(s) or a path diagram(s) and should be a screenshot from their article. (1 pt)
+- __Being brief, describe if you were able to reproduce their results either completely, partially, or not at all__. (3 pts)
   - If only able to partially reproduce their results, please describe where your results differed. Note, that getting findings that are similar (i.e., values that differ by the tenths or hundredths) should be consider completely reproduced. 
   - If possible, explain any discrepancies (e.g., maybe they were unclear about any post-hoc modifications).
 
-In the R script, please include __all that code that was necessary to reproduce the path diagram(s) that are contained in the Word document__. You will be graded based on whether or not your code matches their proposed path diagram(s) that you included in the Word document and not their reported results.
+In the R script, please include __all that code that was necessary to reproduce the path diagram(s) that are contained in the Word document__. You will be graded based on whether or not your code matches their proposed path diagram(s) that you included in the Word document and not their reported results. 
 
 For how to structure for your R script, please base it on this example https://github.com/cddesja/lavaan-reproducible/blob/master/curran1998-alcohol_trajectories.R, specifically Lines 1 - 67. Include the following in your R script in order (i.e., from the top of the script to the bottom)
 
-- __The title, authors, and journal of the paper__
-- __The data__. The covariance structure, sample size, and mean structure (if necessary) or raw data. 
-- __The lavaan syntax for writing the model__. Please try to use full notation and not a short cut (i.e., use `lavaan` and not the `cfa` or `sem` function).
-- __The R code to fit the model and print the summaries need to reproduce their findings__ (i.e., if they reported standardized pattern coefficients and fit statistics your code should request this information, too.)
-
-- 
-
+- __The title, authors, and journal of the paper__ (1 pt)
+- __The data__. The covariance structure, sample size, and mean structure (if necessary) or raw data. (1 pt) 
+- __The lavaan syntax for the model__. Please try to use full notation and not a short cut (i.e., use `lavaan` and not the `cfa` or `sem` function). (5 pts)
+- __The R code to fit the model and print the summaries need to reproduce their findings__ (i.e., if they reported standardized pattern coefficients and fit statistics your code should request this information, too.) (3 pts)
 
 Finally, please indicate in your Word document, __if you are willing to let me post your script__ on my GitHub site: https://github.com/cddesja/lavaan-reproducible. If so, please write your name at the top of the script so that I can give you credit for writing the code.
