@@ -1,0 +1,57 @@
+---
+title: "Measurement Invariance with the Holzinger Dataset"
+author: "Christopher Desjardins"
+date: "April 23, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+\section*{HolzingerSwineford1939 dataset}
+
+The classic Holzinger and Swineford (1939) dataset consists of mental ability test scores of seventh- and eighth-grade children from two different schools (Pasteur and Grant-White). In the original dataset (available in the MBESS package), there are scores for 26 tests. However, a smaller subset with 9 variables is more widely used in the literature (for example in Joreskog's 1969 paper, which also uses the 145 subjects from the Grant-White school only).
+
+This dataset is available in `lavaan`
+
+```{r}
+data("HolzingerSwineford1939", package = "lavaan")
+```
+
+Recall from lecture that the 9 items form 3 factors.
+
+### Visual factor
+x1: Visual perception
+
+x2: Cubes
+
+x3: Lozenges
+
+### Textual factor
+x4: Paragraph comprehension
+
+x5: Sentence completion
+
+x6: Word meaning
+
+### Speed factor
+x7: Speeded addition
+
+x8: Speeded counting of dots
+
+x9: Speeded discrimination straight and curved capitals
+
+## Activity
+Investigate measurement invariance based on `sex` using a multiple group analysis. The `sex` variable is coded 1 for `Female` and 2 for `Male`.
+
++ Fit the following models.
+    1. Configural
+    2. Weak invariance
+    3. Strong invariance
+    4. Strict invariance
+    
++ Compare the models using the chi-square test of difference, CFI, and RMSEA. It is also a good idea to look at the residuals!
+
++ Initially for the activity, ignore, just for didactic purposes, if you fail to get invariance at a certain step.
+
++ For the activity, it is possible that you fail to get invariance at a step and instead you will need to examine partial invariance, to do this use the `lavTestScore` function over the fitted model. The `lavTestScore` will show you which parameters you should free across the groups. This will correspond to the __smallest p-value__. You will look up this parameter using the `parameterEstimates` function. For example, if it says .p3. == .p39. has the smallest p-value, you would look up which parameter this corresponds to in the `parameterEstimates` function by looking for p3 or p39 and then removing the constraint.
