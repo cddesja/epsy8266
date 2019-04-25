@@ -1,4 +1,5 @@
 # Course Notes
+- [4/25](https://github.com/cddesja/epsy8266/raw/master/course_materials/notes/25April2019.pdf)
 - [4/18](https://github.com/cddesja/epsy8266/raw/master/course_materials/notes/18April2019.pdf)
 - [4/11](https://github.com/cddesja/epsy8266/raw/master/course_materials/notes/11April2019.pdf)
 - [4/9](https://github.com/cddesja/epsy8266/raw/master/course_materials/notes/9April2019.pdf) 
